@@ -161,6 +161,10 @@ void LookInfoAboutProduct()
             break;
         }
     }
-    
+    if (CurrentProduct != NULL)
+    {
+        free(CurrentProduct);
+        CurrentProduct = NULL;
+    }
     return;
 }
