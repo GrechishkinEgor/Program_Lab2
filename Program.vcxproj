@@ -139,7 +139,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Monitor.cpp" />
+    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Printer.cpp" />
+    <ClCompile Include="Product.cpp" />
     <ClCompile Include="Program.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Monitor.h" />
+    <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Printer.h" />
+    <ClInclude Include="Product.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
