@@ -7,6 +7,7 @@
 void CreateNewProduct();
 void LookInfoAboutProduct();
 
+/*
 int main()
 {
     SetConsoleCP(1251);
@@ -34,6 +35,7 @@ int main()
     }
     return 0;
 }
+*/
 
 void CreateNewProduct()
 {
