@@ -4,14 +4,14 @@
 #include <conio.h>
 #include "Product.h"
 
-void CreateNewProduct();
-void LookInfoAboutProduct();
+//void CreateNewProduct();
+//void LookInfoAboutProduct();
 
 int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    int UserChoice = 0;
+    /*int UserChoice = 0;
     while (UserChoice != 27)
     {
         UserChoice = 0;
@@ -31,10 +31,16 @@ int main()
             LookInfoAboutProduct();
             break;
         }
-    }
+    }*/
+
+
+
     return 0;
 }
 
+
+
+/*
 void CreateNewProduct()
 {
     Product CurrentProduct;
@@ -167,4 +173,4 @@ void LookInfoAboutProduct()
         CurrentProduct = NULL;
     }
     return;
-}
+}*/
