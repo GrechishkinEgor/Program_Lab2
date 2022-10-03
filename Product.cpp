@@ -171,7 +171,7 @@ int LoadProduct(Product* CurrentProduct, char* Path)
 	FILE* FileOfProduct = fopen(Path, "rb");
 	if (FileOfProduct != NULL)
 	{
-		fread(CurrentProduct, sizeof(Product), 1, FileOfProduct);
+		ReadProductFromFile(CurrentProduct, FileOfProduct);
 		fclose(FileOfProduct);
 		FileOfProduct = NULL;
 		return 1;

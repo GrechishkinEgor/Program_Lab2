@@ -22,12 +22,9 @@ Printer InitPrinter(Product General, char* Type, int DPI, int PaperFormat)
 	Printer Init;
 	Init = InitPrinter();
 	Init.General = General;
-	if (Type != NULL && strlen(Type) < PRINTER_TYPE_OF_PRINT_SIZE)
-		strcpy(Init.TypeOfPrint, Type);
-	if (DPI > 0)
-		Init.DPI = DPI;
-	if (PaperFormat >= 0)
-		Init.PaperFormat = PaperFormat;
+	SetPrinterTypeOfPrint(&Init, Type);
+	SetPrinterDPI(&Init, DPI);
+	SetPrinterPaperFormat(&Init, PaperFormat);
 	return Init;
 }
 
@@ -160,11 +157,21 @@ int LoadPrinter(Printer* CurrentProduct, char* Path)
 	FILE* FileOfProduct = fopen(Path, "rb");
 	if (FileOfProduct != NULL)
 	{
-		fread(CurrentProduct, sizeof(Printer), 1, FileOfProduct);
+		ReadPrinterFromFile(CurrentProduct, FileOfProduct);
 		fclose(FileOfProduct);
 		FileOfProduct = NULL;
 		return 1;
 	}
 	else
 		return 0;
+}
+
+int ReadPrinterFromFile(Printer* CurrentProduct, FILE* BinaryReaderFile)
+{
+	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
+		return 0;
+	if (fread(&CurrentProduct, sizeof(Printer), 1, BinaryReaderFile) == 1)
+		return 1;
+	else
+		return -1;
 }

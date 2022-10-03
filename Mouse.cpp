@@ -117,3 +117,74 @@ void OutputAllInfoAboutMouse(Mouse CurrentMouse)
 	printf("Количество кнопок: %d\n", CurrentMouse.CountOfButtons);
 	return;
 }
+
+int SaveMouse(Mouse CurrentProduct, char* Path)
+{
+	if (Path == NULL)
+		return 0;
+	FILE* FileOfProduct = fopen(Path, "wb");
+	if (FileOfProduct != NULL)
+	{
+		WriteMouseInFile(CurrentProduct, FileOfProduct);
+		fclose(FileOfProduct);
+		FileOfProduct = NULL;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int SaveNewMouse(Mouse CurrentProduct, char* Path)
+{
+	if (Path == NULL)
+		return 0;
+	FILE* NewProduct = fopen(Path, "rb");
+	if (NewProduct != NULL)
+	{
+		fclose(NewProduct);
+		NewProduct = NULL;
+		return -1;
+	}
+	else
+		return SaveMouse(CurrentProduct, Path);
+}
+
+int WriteMouseInFile(Mouse CurrentProduct, FILE* BinaryWriterFile)
+{
+	if (BinaryWriterFile != NULL)
+	{
+		fwrite(&CurrentProduct, sizeof(Mouse), 1, BinaryWriterFile);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int LoadMouse(Mouse* CurrentProduct, char* Path)
+{
+	if (Path == NULL)
+		return 0;
+	if (CurrentProduct == NULL)
+		return -1;
+
+	FILE* FileOfProduct = fopen(Path, "rb");
+	if (FileOfProduct != NULL)
+	{
+		ReadMouseFromFile(CurrentProduct, FileOfProduct);
+		fclose(FileOfProduct);
+		FileOfProduct = NULL;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int ReadMouseFromFile(Mouse* CurrentProduct, FILE* BinaryReaderFile)
+{
+	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
+		return 0;
+	if (fread(&CurrentProduct, sizeof(Mouse), 1, BinaryReaderFile) == 1)
+		return 1;
+	else
+		return -1;
+}
