@@ -14,7 +14,7 @@ Mouse InitMouse()
 Mouse InitMouse(Product General)
 {
 	Mouse Init = InitMouse();
-	Init.General = General;
+	SetMouseGeneral(&Init, General);
 	return Init;
 }
 
@@ -30,14 +30,10 @@ Mouse InitMouse(Product General, int Sensitivity, int CountButtons, char* TypeOf
 Mouse InitMouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection)
 {
 	Mouse Init = InitMouse();
-	Init.General = General;
-	if (Sensitivity >= 0)
-		Init.Sensitivity = Sensitivity;
-	if (CountButtons >= 0)
-		Init.CountOfButtons = CountButtons;
-	if (TypeOfConnection != NULL && strlen(TypeOfConnection) < MOUSE_TYPE_OF_CONNECTION_SIZE)
-		strcpy(Init.TypeOfConnection, TypeOfConnection);
-	
+	SetMouseGeneral(&Init, General);
+	SetMouseSensitivity(&Init, Sensitivity);
+	SetMouseCountOfButtons(&Init, CountButtons);
+	SetMouseTypeOfConnection(&Init, TypeOfConnection);
 	return Init;
 }
 
@@ -85,6 +81,17 @@ int SetMouseCountOfButtons(Mouse* CurrentMouse, int Count)
 		return 0;
 }
 
+int SetMouseGeneral(Mouse* CurrentMouse, Product General)
+{
+	if (CurrentMouse != NULL)
+	{
+		CurrentMouse->General = General;
+		return 1;
+	}
+	else
+		return 0;
+}
+
 void GetMouseTypeOfConnection(Mouse CurrentMouse, char* TypeOfConnection)
 {
 	if (TypeOfConnection != NULL)
@@ -105,6 +112,11 @@ int GetMouseSensitivity(Mouse CurrentMouse)
 int GetMouseCountOfButtons(Mouse CurrentMouse)
 {
 	return CurrentMouse.CountOfButtons;
+}
+
+Product GetMouseGeneral(Mouse CurrentMouse)
+{
+	return CurrentMouse.General;
 }
 
 void OutputAllInfoAboutMouse(Mouse CurrentMouse)
@@ -183,7 +195,7 @@ int ReadMouseFromFile(Mouse* CurrentProduct, FILE* BinaryReaderFile)
 {
 	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
 		return 0;
-	if (fread(&CurrentProduct, sizeof(Mouse), 1, BinaryReaderFile) == 1)
+	if (fread(CurrentProduct, sizeof(Mouse), 1, BinaryReaderFile) == 1)
 		return 1;
 	else
 		return -1;

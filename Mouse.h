@@ -21,11 +21,13 @@ int SetMouseTypeOfConnection(Mouse* CurrentMouse, char* TypeOfConnection);
 int SetMouseLengthOfCable(Mouse* CurrentMouse, int LenghtOfCable);
 int SetMouseSensitivity(Mouse* CurrentMouse, int Sensitivity);
 int SetMouseCountOfButtons(Mouse* CurrentMouse, int Count);
+int SetMouseGeneral(Mouse* CurrentMouse, Product General);
 
 void GetMouseTypeOfConnection(Mouse CurrentMouse, char* TypeOfConnection);
 int GetMouseLenghtOfCable(Mouse CurrentMouse);
 int GetMouseSensitivity(Mouse CurrentMouse);
 int GetMouseCountOfButtons(Mouse CurrentMouse);
+Product GetMouseGeneral(Mouse CurrentMouse);
 
 /*Вывод всей информации о мыши на экран*/
 void OutputAllInfoAboutMouse(Mouse CurrentMouse);

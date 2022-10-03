@@ -170,7 +170,7 @@ int ReadPrinterFromFile(Printer* CurrentProduct, FILE* BinaryReaderFile)
 {
 	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
 		return 0;
-	if (fread(&CurrentProduct, sizeof(Printer), 1, BinaryReaderFile) == 1)
+	if (fread(CurrentProduct, sizeof(Printer), 1, BinaryReaderFile) == 1)
 		return 1;
 	else
 		return -1;

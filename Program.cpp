@@ -12,8 +12,11 @@ int main()
     Mouse FirstMouse = InitMouse();
     OutputAllInfoAboutMouse(FirstMouse);
     Product FirstProduct = InitProduct();
-    OutputAllInfoAboutProduct(FirstProduct);
-    Printer FirstPrinter = InitPrinter();
-    OutputAllInfoAboutPrinter(FirstPrinter);
+    char Path[] = "New";
+    SaveMouse(FirstMouse, Path);
+    char TypeOfConnection[] = "Проводная";
+    Mouse SecondMouse = InitMouse(FirstProduct, 5, 5, TypeOfConnection);
+    LoadMouse(&SecondMouse, Path);
+    OutputAllInfoAboutMouse(SecondMouse);
     return 0;
 }
