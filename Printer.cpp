@@ -64,6 +64,17 @@ int SetPrinterPaperFormat(Printer* CurrentPrinter, int PaperFormat)
 		return 0;
 }
 
+int SetPrinterGeneral(Printer* CurrentPrinter, Product General)
+{
+	if (CurrentPrinter != NULL)
+	{
+		CurrentPrinter->General = General;
+		return 1;
+	}
+	else
+		return 0;
+}
+
 void GetPrinterTypeOfPrint(Printer CurrentPrinter, char* TypeOfPrint)
 {
 	if (TypeOfPrint != NULL)
@@ -79,6 +90,11 @@ int GetPrinterDPI(Printer CurrentPrinter)
 int GetPrinterPaperFormat(Printer CurrentPrinter)
 {
 	return CurrentPrinter.PaperFormat;
+}
+
+Product GetPrinterGeneral(Printer CurrentPrinter)
+{
+	return CurrentPrinter.General;
 }
 
 void OutputAllInfoAboutPrinter(Printer CurrentPrinter)
@@ -127,7 +143,26 @@ int WritePrinterInFile(Printer CurrentProduct, FILE* BinaryWriterFile)
 	{
 		//Можно сначала вызвывать WriteProductInFIle(CurrentProduct.General, BinaryWriterFile)
 		//Затем записать оставшиеся поля Printer
-		fwrite(&CurrentProduct, sizeof(Product), 1, BinaryWriterFile);
+		fwrite(&CurrentProduct, sizeof(Printer), 1, BinaryWriterFile);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int LoadPrinter(Printer* CurrentProduct, char* Path)
+{
+	if (Path == NULL)
+		return 0;
+	if (CurrentProduct == NULL)
+		return -1;
+
+	FILE* FileOfProduct = fopen(Path, "rb");
+	if (FileOfProduct != NULL)
+	{
+		fread(CurrentProduct, sizeof(Printer), 1, FileOfProduct);
+		fclose(FileOfProduct);
+		FileOfProduct = NULL;
 		return 1;
 	}
 	else

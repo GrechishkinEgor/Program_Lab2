@@ -18,10 +18,12 @@ Printer InitPrinter(Product General, char* Type, int DPI, int PaperFormat);
 int SetPrinterTypeOfPrint(Printer* CurrentPrinter, char* TypeOfPrint);
 int SetPrinterDPI(Printer* CurrentPrinter, int DPI);
 int SetPrinterPaperFormat(Printer* CurrentPrinter, int PaperFormat);
+int SetPrinterGeneral(Printer* CurrentPrinter, Product General);
 
 void GetPrinterTypeOfPrint(Printer CurrentPrinter, char* TypeOfPrint);
 int GetPrinterDPI(Printer CurrentPrinter);
 int GetPrinterPaperFormat(Printer CurrentPrinter);
+Product GetPrinterGeneral(Printer CurrentPrinter);
 
 /*Вывод всей информации о CurrentPrinter на экран*/
 void OutputAllInfoAboutPrinter(Printer CurrentPrinter);
