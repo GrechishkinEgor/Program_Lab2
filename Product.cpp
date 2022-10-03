@@ -70,6 +70,30 @@ int SetProductCount(Product* CurrentProduct, int Count)
 		return 0;
 }
 
+void GetProductName(Product CurrentProduct, char* Name)
+{
+	if (Name != NULL)
+		strcpy(Name, CurrentProduct.Name);
+	return;
+}
+
+void GetProductCompany(Product CurrentProduct, char* Company)
+{
+	if (Company != NULL)
+		strcpy(Company, CurrentProduct.Company);
+	return;
+}
+
+int GetProductPrice(Product CurrentProduct)
+{
+	return CurrentProduct.Price;
+}
+
+int GetProductCount(Product CurrentProduct)
+{
+	return CurrentProduct.Count;
+}
+
 int IncreaseCountOfProduct(Product* CurrentProduct)
 {
 	if (CurrentProduct != NULL)
@@ -95,8 +119,6 @@ void OutputAllInfoAboutProduct(Product CurrentProduct)
 	return;
 }
 
-/*Записать информацию о товаре в файл (путь - Path)
-Возврат: 1 - успешно; 0 - файл не открылся*/
 int SaveProduct(Product CurrentProduct, char* Path)
 {
 	if (Path == NULL)
@@ -104,7 +126,7 @@ int SaveProduct(Product CurrentProduct, char* Path)
 	FILE* FileOfProduct = fopen(Path, "wb");
 	if (FileOfProduct != NULL)
 	{
-		fwrite(&CurrentProduct, sizeof(Product), 1, FileOfProduct);
+		WriteProductInFile(CurrentProduct, FileOfProduct);
 		fclose(FileOfProduct);
 		FileOfProduct = NULL;
 		return 1;
@@ -128,9 +150,18 @@ int SaveNewProduct(Product CurrentProduct, char* Path)
 		return SaveProduct(CurrentProduct, Path);
 }
 
-/*Считать данные о товаре из файла (путь - Path)
-Возврат: 1 - успешно; 0 - файла не существует или недоступен; -1 - передан нулевой указатель на структуру*/
-int ReadProductFromFile(Product* CurrentProduct, char* Path)
+int WriteProductInFile(Product CurrentProduct, FILE* BinaryWriterFile)
+{
+	if (BinaryWriterFile != NULL)
+	{
+		fwrite(&CurrentProduct, sizeof(Product), 1, BinaryWriterFile);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int LoadProduct(Product* CurrentProduct, char* Path)
 {
 	if (Path == NULL)
 		return 0;
@@ -147,4 +178,14 @@ int ReadProductFromFile(Product* CurrentProduct, char* Path)
 	}
 	else
 		return 0;
+}
+
+int ReadProductFromFile(Product* CurrentProduct, FILE* BinaryReaderFile)
+{
+	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
+		return 0;
+	if (fread(&CurrentProduct, sizeof(Product), 1, BinaryReaderFile) == 1)
+		return 1;
+	else
+		return -1;
 }
