@@ -3,6 +3,7 @@
 Mouse InitMouse()
 {
 	Mouse Init;
+	Init.General = InitProduct();
 	Init.TypeOfConnection[0] = '\0';
 	Init.LengthOfCable = 0;
 	Init.Sensitivity = 0;
@@ -10,31 +11,117 @@ Mouse InitMouse()
 	return Init;
 }
 
-Mouse InitMouse(int Sensitivity, int CountButtons, char* TypeOfConnection, int LengthOfCable)
+Mouse InitMouse(Product General)
+{
+	Mouse Init = InitMouse();
+	SetMouseGeneral(&Init, General);
+	return Init;
+}
+
+Mouse InitMouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection, int LengthOfCable)
 {
 	Mouse Init;
-	Init = InitMouse(Sensitivity, CountButtons, TypeOfConnection);
+	Init = InitMouse(General, Sensitivity, CountButtons, TypeOfConnection);
 	if (LengthOfCable > 0)
 		Init.LengthOfCable = LengthOfCable;
 	return Init;
 }
 
-Mouse InitMouse(int Sensitivity, int CountButtons, char* TypeOfConnection)
+Mouse InitMouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection)
 {
-	Mouse Init;
-	Init = InitMouse();
-	if (Sensitivity > 0)
-		Init.Sensitivity = Sensitivity;
-	if (CountButtons > 0)
-		Init.CountOfButtons = CountButtons;
-	if (TypeOfConnection != NULL && strlen(TypeOfConnection) < MOUSE_TYPE_OF_CONNECTION_SIZE)
-		strcpy(Init.TypeOfConnection, TypeOfConnection);
-	
+	Mouse Init = InitMouse();
+	SetMouseGeneral(&Init, General);
+	SetMouseSensitivity(&Init, Sensitivity);
+	SetMouseCountOfButtons(&Init, CountButtons);
+	SetMouseTypeOfConnection(&Init, TypeOfConnection);
 	return Init;
+}
+
+int SetMouseTypeOfConnection(Mouse* CurrentMouse, char* TypeOfConnection)
+{
+	if (CurrentMouse != NULL && TypeOfConnection != NULL && strlen(TypeOfConnection) < MOUSE_TYPE_OF_CONNECTION_SIZE)
+	{
+		strcpy(CurrentMouse->TypeOfConnection, TypeOfConnection);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int SetMouseLengthOfCable(Mouse* CurrentMouse, int LenghtOfCable)
+{
+	if (CurrentMouse != NULL && LenghtOfCable >= 0)
+	{
+		CurrentMouse->LengthOfCable = LenghtOfCable;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int SetMouseSensitivity(Mouse* CurrentMouse, int Sensitivity)
+{
+	if (CurrentMouse != NULL && Sensitivity >= 0)
+	{
+		CurrentMouse->Sensitivity = Sensitivity;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int SetMouseCountOfButtons(Mouse* CurrentMouse, int Count)
+{
+	if (CurrentMouse != NULL && Count >= 0)
+	{
+		CurrentMouse->CountOfButtons = Count;
+		return 1;
+	}
+	else 
+		return 0;
+}
+
+int SetMouseGeneral(Mouse* CurrentMouse, Product General)
+{
+	if (CurrentMouse != NULL)
+	{
+		CurrentMouse->General = General;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+void GetMouseTypeOfConnection(Mouse CurrentMouse, char* TypeOfConnection)
+{
+	if (TypeOfConnection != NULL)
+		strcpy(TypeOfConnection, CurrentMouse.TypeOfConnection);
+	return;
+}
+
+int GetMouseLenghtOfCable(Mouse CurrentMouse)
+{
+	return CurrentMouse.LengthOfCable;
+}
+
+int GetMouseSensitivity(Mouse CurrentMouse)
+{
+	return CurrentMouse.Sensitivity;
+}
+
+int GetMouseCountOfButtons(Mouse CurrentMouse)
+{
+	return CurrentMouse.CountOfButtons;
+}
+
+Product GetMouseGeneral(Mouse CurrentMouse)
+{
+	return CurrentMouse.General;
 }
 
 void OutputAllInfoAboutMouse(Mouse CurrentMouse)
 {
+	OutputAllInfoAboutProduct(CurrentMouse.General);
 	printf("Тип соединения: %s\n", CurrentMouse.TypeOfConnection);
 	if (CurrentMouse.LengthOfCable > 0)
 		printf("Длина кабеля (см): %d\n", CurrentMouse.LengthOfCable);
@@ -43,20 +130,73 @@ void OutputAllInfoAboutMouse(Mouse CurrentMouse)
 	return;
 }
 
-void InputAllInfoAboutMouse(Mouse* CurrentMouse)
+int SaveMouse(Mouse CurrentProduct, char* Path)
 {
-	*CurrentMouse = InitMouse();
-	printf("Введите тип соединения (проводная, беспроводная): ");
-	scanf_s("%s", CurrentMouse->TypeOfConnection, MOUSE_TYPE_OF_CONNECTION_SIZE);
-	while (getchar() != '\n');
-	printf("Введите длину кабеля (в см; если нет кабеля - введите 0): ");
-	scanf("%d", &CurrentMouse->LengthOfCable);
-	while (getchar() != '\n');
-	printf("Введите разрешение датчика (dpi): ");
-	scanf("%d", &CurrentMouse->Sensitivity);
-	while (getchar() != '\n');
-	printf("Введите количество кнопок: ");
-	scanf("%d", &CurrentMouse->CountOfButtons);
-	while (getchar() != '\n');
-	return;
+	if (Path == NULL)
+		return 0;
+	FILE* FileOfProduct = fopen(Path, "wb");
+	if (FileOfProduct != NULL)
+	{
+		WriteMouseInFile(CurrentProduct, FileOfProduct);
+		fclose(FileOfProduct);
+		FileOfProduct = NULL;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int SaveNewMouse(Mouse CurrentProduct, char* Path)
+{
+	if (Path == NULL)
+		return 0;
+	FILE* NewProduct = fopen(Path, "rb");
+	if (NewProduct != NULL)
+	{
+		fclose(NewProduct);
+		NewProduct = NULL;
+		return -1;
+	}
+	else
+		return SaveMouse(CurrentProduct, Path);
+}
+
+int WriteMouseInFile(Mouse CurrentProduct, FILE* BinaryWriterFile)
+{
+	if (BinaryWriterFile != NULL)
+	{
+		fwrite(&CurrentProduct, sizeof(Mouse), 1, BinaryWriterFile);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int LoadMouse(Mouse* CurrentProduct, char* Path)
+{
+	if (Path == NULL)
+		return 0;
+	if (CurrentProduct == NULL)
+		return -1;
+
+	FILE* FileOfProduct = fopen(Path, "rb");
+	if (FileOfProduct != NULL)
+	{
+		ReadMouseFromFile(CurrentProduct, FileOfProduct);
+		fclose(FileOfProduct);
+		FileOfProduct = NULL;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int ReadMouseFromFile(Mouse* CurrentProduct, FILE* BinaryReaderFile)
+{
+	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
+		return 0;
+	if (fread(CurrentProduct, sizeof(Mouse), 1, BinaryReaderFile) == 1)
+		return 1;
+	else
+		return -1;
 }

@@ -7,66 +7,107 @@ Product InitProduct()
 	Init.Company[0] = '\0';
 	Init.Price = 0;
 	Init.Count = 0;
-	Init.Type = IsNotDefined;
 	return Init;
 }
 
 Product InitProduct(char* Name, char* Company, int Price)
 {
 	Product Init = InitProduct();
-	if (Name != NULL && strlen(Name) < PRODUCT_NAME_SIZE)
-		strcpy(Init.Name, Name);
-	if (Company != NULL && strlen(Company) < PRODUCT_COMPANY_SIZE)
-		strcpy(Init.Company, Company);
-	if (Price >= 0)
-		Init.Price = Price;
+	SetProductName(&Init, Name);
+	SetProductCompany(&Init, Company);
+	SetProductPrice(&Init, Price);
 	return Init;
 }
 
-Product InitProduct(char* Name, char* Company, int Price, Mouse Info)
+Product InitProduct(char* Name, char* Company, int Price, int Count)
 {
 	Product Init = InitProduct(Name, Company, Price);
-	Init.Type = IsMouse;
-	Init.Information.AboutMouse = Info;
+	SetProductCount(&Init, Count);
 	return Init;
 }
 
-Product InitProduct(char* Name, char* Company, int Price, Keyboard Info)
+int SetProductName(Product* CurrentProduct, char* Name)
 {
-	Product Init = InitProduct(Name, Company, Price);
-	Init.Type = IsKeyboard;
-	Init.Information.AboutKeyboard = Info;
-	return Init;
+	if (CurrentProduct != NULL && Name != NULL && strlen(Name) < PRODUCT_NAME_MAX_SIZE)
+	{
+		strcpy(CurrentProduct->Name, Name);
+		return 1;
+	}
+	else
+		return 0;
 }
 
-Product InitProduct(char* Name, char* Company, int Price, Monitor Info)
+int SetProductCompany(Product* CurrentProduct, char* Company)
 {
-	Product Init = InitProduct(Name, Company, Price);
-	Init.Type = IsMonitor;
-	Init.Information.AboutMonitor = Info;
-	return Init;
+	if (CurrentProduct != NULL && Company != NULL && strlen(Company) < PRODUCT_COMPANY_MAX_SIZE)
+	{
+		strcpy(CurrentProduct->Company, Company);
+		return 1;
+	}
+	else
+		return 0;
 }
 
-Product InitProduct(char* Name, char* Company, int Price, Printer Info)
+int SetProductPrice(Product* CurrentProduct, int Price)
 {
-	Product Init = InitProduct(Name, Company, Price);
-	Init.Type = IsPrinter;
-	Init.Information.AboutPrinter = Info;
-	return Init;
+	if (CurrentProduct != NULL && Price >= 0)
+	{
+		CurrentProduct->Price = Price;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int SetProductCount(Product* CurrentProduct, int Count)
+{
+	if (CurrentProduct != NULL && Count >= 0)
+	{
+		CurrentProduct->Count = Count;
+		return 1;
+	}
+	else
+		return 0;
+}
+
+void GetProductName(Product CurrentProduct, char* Name)
+{
+	if (Name != NULL)
+		strcpy(Name, CurrentProduct.Name);
+	return;
+}
+
+void GetProductCompany(Product CurrentProduct, char* Company)
+{
+	if (Company != NULL)
+		strcpy(Company, CurrentProduct.Company);
+	return;
+}
+
+int GetProductPrice(Product CurrentProduct)
+{
+	return CurrentProduct.Price;
+}
+
+int GetProductCount(Product CurrentProduct)
+{
+	return CurrentProduct.Count;
 }
 
 int IncreaseCountOfProduct(Product* CurrentProduct)
 {
-	if (CurrentProduct->Count + 1 > 0)
-		CurrentProduct->Count++;
-	return CurrentProduct->Count;
+	if (CurrentProduct != NULL)
+		return SetProductCount(CurrentProduct, CurrentProduct->Count + 1);
+	else
+		return 0;
 }
 
 int DecreaseCountOfProduct(Product* CurrentProduct)
 {
-	if (CurrentProduct->Count - 1 >= 0)
-		CurrentProduct->Count--;
-	return CurrentProduct->Count;
+	if (CurrentProduct != NULL)
+		return SetProductCount(CurrentProduct, CurrentProduct->Count - 1);
+	else
+		return 0;
 }
 
 void OutputAllInfoAboutProduct(Product CurrentProduct)
@@ -75,133 +116,76 @@ void OutputAllInfoAboutProduct(Product CurrentProduct)
 	printf("Компания-производитель: %s\n", CurrentProduct.Company);
 	printf("Цена товара (в рублях): %g\n", CurrentProduct.Price / 100.0);
 	printf("Количество товара (штук): %d\n", CurrentProduct.Count);
-	switch (CurrentProduct.Type)
-	{
-	case IsKeyboard:
-		OutputAllInfoAboutKeyboard(CurrentProduct.Information.AboutKeyboard);
-		break;
-	case IsPrinter:
-		OutputAllInfoAboutPrinter(CurrentProduct.Information.AboutPrinter);
-		break;
-	case IsMouse:
-		OutputAllInfoAboutMouse(CurrentProduct.Information.AboutMouse);
-		break;
-	case IsMonitor:
-		OutputAllInfoAboutMonitor(CurrentProduct.Information.AboutMonitor);
-		break;
-	}
 	return;
 }
 
-void InputAllInfoAboutProduct(Product* CurrentProduct)
-{
-	printf("Введите название товара: ");
-	scanf_s("%s", CurrentProduct->Name, PRODUCT_NAME_SIZE);
-	while (getchar() != '\n');
-	printf("Введите компанию-производителя: ");
-	scanf_s("%s", CurrentProduct->Company, PRODUCT_COMPANY_SIZE);
-	while (getchar() != '\n');
-	printf("Введите цену товара (в копейках!): ");
-	scanf("%d", &CurrentProduct->Price);
-	while (getchar() != '\n');
-	printf("Введите количество товара (штук): ");
-	scanf("%d", &CurrentProduct->Count);
-	while (getchar() != '\n');
-	int UserChoiceOfType = 0;
-	while (UserChoiceOfType < 1 || UserChoiceOfType > 4)
-	{
-		printf("Выберите тип товара: \n"
-			"1 - Клавиатура\n"
-			"2 - Монитор\n"
-			"3 - Мышь\n"
-			"4 - Принтер\n"
-			"Ваш выбор: "
-		);
-		scanf("%d", &UserChoiceOfType);
-		while (getchar() != '\n');
-	}
-	switch (UserChoiceOfType)
-	{
-	case 1: 
-		CurrentProduct->Type = IsKeyboard;
-		InputAllInfoAboutKeyboard(&CurrentProduct->Information.AboutKeyboard);
-		break;
-	case 2:
-		CurrentProduct->Type = IsMonitor;
-		InputAllInfoAboutMonitor(&CurrentProduct->Information.AboutMonitor);
-		break;
-	case 3:
-		CurrentProduct->Type = IsMouse;
-		InputAllInfoAboutMouse(&CurrentProduct->Information.AboutMouse);
-		break;
-	case 4:
-		CurrentProduct->Type = IsPrinter;
-		InputAllInfoAboutPrinter(&CurrentProduct->Information.AboutPrinter);
-		break;
-	}
-	
-	return;
-}
-
-/*Записать информацию о товаре в новый файл (путь - Path)
-Возврат: 0 - успешно; 1 - файл существует; -1 - файл не открылся*/
-int WriteProductInFile(Product CurrentProduct, char* Path)
+int SaveProduct(Product CurrentProduct, char* Path)
 {
 	if (Path == NULL)
-		return -1;
-	FILE* FileOfProduct = fopen(Path, "rb");
-	if (FileOfProduct == NULL)
-		return SaveProduct(CurrentProduct, Path);
-	else
+		return 0;
+	FILE* FileOfProduct = fopen(Path, "wb");
+	if (FileOfProduct != NULL)
 	{
+		WriteProductInFile(CurrentProduct, FileOfProduct);
 		fclose(FileOfProduct);
 		FileOfProduct = NULL;
 		return 1;
 	}
+	else
+		return 0;
 }
 
-/*Записать информацию о товаре в файл (путь - Path)
-Возврат: 0 - успешно; -1 - файл не открылся*/
-int SaveProduct(Product CurrentProduct, char* Path)
+int SaveNewProduct(Product CurrentProduct, char* Path)
 {
-	FILE* FileOfProduct = fopen(Path, "wb");
-	if (FileOfProduct != NULL)
-	{
-		fwrite(&CurrentProduct, sizeof(Product), 1, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
+	if (Path == NULL)
 		return 0;
+	FILE* NewProduct = fopen(Path, "rb");
+	if (NewProduct != NULL)
+	{
+		fclose(NewProduct);
+		NewProduct = NULL;
+		return -1;
 	}
 	else
-		return -1;
+		return SaveProduct(CurrentProduct, Path);
 }
 
-/*Считать данные о товаре из файла (путь - Path)
-Возврат: 0 - успешно; -1 - файла не существует или недоступен*/
-int ReadProductFromFile(Product* CurrentProduct, char* Path)
+int WriteProductInFile(Product CurrentProduct, FILE* BinaryWriterFile)
 {
+	if (BinaryWriterFile != NULL)
+	{
+		fwrite(&CurrentProduct, sizeof(Product), 1, BinaryWriterFile);
+		return 1;
+	}
+	else
+		return 0;
+}
+
+int LoadProduct(Product* CurrentProduct, char* Path)
+{
+	if (Path == NULL)
+		return 0;
+	if (CurrentProduct == NULL)
+		return -1;
+
 	FILE* FileOfProduct = fopen(Path, "rb");
 	if (FileOfProduct != NULL)
 	{
-		fread(CurrentProduct, sizeof(Product), 1, FileOfProduct);
+		ReadProductFromFile(CurrentProduct, FileOfProduct);
 		fclose(FileOfProduct);
 		FileOfProduct = NULL;
-		return 0;
+		return 1;
 	}
 	else
+		return 0;
+}
+
+int ReadProductFromFile(Product* CurrentProduct, FILE* BinaryReaderFile)
+{
+	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
+		return 0;
+	if (fread(CurrentProduct, sizeof(Product), 1, BinaryReaderFile) == 1)
+		return 1;
+	else
 		return -1;
-}
-
-int SetPriceOfProduct(Product* CurrentProduct, int NewPrice)
-{
-	if (NewPrice >= 0)
-		CurrentProduct->Price = NewPrice;
-	return CurrentProduct->Price;
-}
-
-int SetCountOfProduct(Product* CurrentProduct, int NewCount)
-{
-	if (NewCount >= 0)
-		CurrentProduct->Count = NewCount;
-	return CurrentProduct->Count;
 }
