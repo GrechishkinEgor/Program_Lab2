@@ -4,7 +4,7 @@
 #include "Product.h"
 
 #define MOUSE_TYPE_OF_CONNECTION_SIZE 64
-class Mouse : Product
+class Mouse : public Product
 {
 private:
 	char TypeOfConnection[MOUSE_TYPE_OF_CONNECTION_SIZE];	//Проводная/беспроводная

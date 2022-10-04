@@ -1,198 +1,207 @@
 #include "Monitor.h"
 
-Monitor InitMonitor()
+void Monitor::OutputAllInfo()
 {
-	Monitor Init;
-	Init.Diagonal = 0;
-	Init.Frequency = 0;
-	Init.Size[0] = 0;
-	Init.Size[1] = 0;
-	Init.AspectRatio[0] = 0;
-	Init.AspectRatio[1] = 0;
-	Init.General = InitProduct();
-	return Init;
-}
-
-Monitor InitMonitor(Product General)
-{
-	Monitor Init = InitMonitor();
-	SetMonitorGeneral(&Init, General);
-	return Init;
-}
-
-Monitor InitMonitor(Product General, int Diagonal, int Frequency, int Size[2], int AspectRatio[2])
-{
-	Monitor Init = InitMonitor(General);
-	SetMonitorDiagonal(&Init, Diagonal);
-	SetMonitorFrequency(&Init, Frequency);
-	SetMonitorSize(&Init, Size[0], Size[1]);
-	SetMonitorAspectRatio(&Init, AspectRatio[0], AspectRatio[1]);
-	return Init;
-}
-
-int SetMonitorGeneral(Monitor* CurrentMonitor, Product General)
-{
-	if (CurrentMonitor != NULL)
-	{
-		CurrentMonitor->General = General;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int SetMonitorDiagonal(Monitor* CurrentMonitor, int Diagonal)
-{
-	if (CurrentMonitor != NULL)
-	{
-		CurrentMonitor->Diagonal = Diagonal;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int SetMonitorFrequency(Monitor* CurrentMonitor, int Frequency)
-{
-	if (CurrentMonitor != NULL)
-	{
-		CurrentMonitor->Frequency = Frequency;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int SetMonitorSize(Monitor* CurrentMonitor, int Width, int Height)
-{
-	if (CurrentMonitor != NULL)
-	{
-		CurrentMonitor->Size[0] = Width;
-		CurrentMonitor->Size[1] = Height;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int SetMonitorAspectRatio(Monitor* CurrentMonitor, int AspectRatio1, int AspectRatio2)
-{
-	if (CurrentMonitor != NULL)
-	{
-		CurrentMonitor->AspectRatio[0] = AspectRatio1;
-		CurrentMonitor->AspectRatio[1] = AspectRatio2;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-Product GetMonitorGeneral(Monitor CurrentMonitor)
-{
-	return CurrentMonitor.General;
-}
-
-int GetMonitorDiagonal(Monitor CurrentMonitor)
-{
-	return CurrentMonitor.Diagonal;
-}
-
-int GetMonitorFrequency(Monitor CurrentMonitor)
-{
-	return CurrentMonitor.Frequency;
-}
-
-void GetMonitorSize(Monitor CurrentMonitor, int* Width, int* Height)
-{
-	*Width = CurrentMonitor.Size[0];
-	*Height = CurrentMonitor.Size[1];
+	Product::OutputAllInfo();
+	printf("Диагональ матрицы (в дюймах): %d\n", this->Diagonal);
+	printf("Частота обновления экрана (в герцах): %d\n", this->Frequency);
+	printf("Разрешение экрана: %d x %d\n", this->Size[0], this->Size[1]);
+	printf("Соотношение сторон: %d:%d\n", this->AspectRatio[0], this->AspectRatio[1]);
 	return;
 }
 
-void GetMonitorAspectRatio(Monitor CurrentMonitor, int* AspectRatio1, int* AspectRatio2)
+int Monitor::Save(char* Path)
 {
-	*AspectRatio1 = CurrentMonitor.AspectRatio[0];
-	*AspectRatio2 = CurrentMonitor.AspectRatio[1];
+	if (Path != NULL)
+	{
+		FILE* Writer = fopen(Path, "wb");
+		if (Writer != NULL)
+		{
+			this->WriteInFile(Writer);
+			fclose(Writer);
+			Writer = NULL;
+			return 1;
+		}
+		else
+			return 0;
+	}
+	else
+		return 0;
+}
+
+int Monitor::SaveNew(char* Path)
+{
+	if (Path != NULL)
+	{
+		FILE* Check = fopen(Path, "rb");
+		if (Check != NULL)
+		{
+			fclose(Check);
+			Check = NULL;
+			return -1;
+		}
+		else
+			return this->Save(Path);
+	}
+	else
+		return 0;
+}
+
+int Monitor::WriteInFile(FILE* BinaryWriterFile)
+{
+	if (BinaryWriterFile == NULL)
+		return 0;
+	Product::WriteInFile(BinaryWriterFile);
+	fwrite(&this->Diagonal, sizeof(this->Diagonal), 1, BinaryWriterFile);
+	fwrite(&this->Frequency, sizeof(this->Frequency), 1, BinaryWriterFile);
+	fwrite(this->Size, sizeof(this->Size), 1, BinaryWriterFile);
+	fwrite(this->AspectRatio, sizeof(this->AspectRatio), 1, BinaryWriterFile);
+	return 1;
+}
+
+int Monitor::Load(char* Path)
+{
+	if (Path == NULL)
+		return 0;
+	FILE* Reader = fopen(Path, "rb");
+	if (Reader != NULL)
+	{
+		this->ReadFromFile(Reader);
+		fclose(Reader);
+		Reader = NULL;
+		return 1;
+	}
+	else
+		return -1;
+	return 0;
+}
+
+int Monitor::ReadFromFile(FILE* BinaryReaderFile)
+{
+	if (BinaryReaderFile == NULL)
+		return 0;
+	Product::WriteInFile(BinaryReaderFile);
+	fread(&this->Diagonal, sizeof(this->Diagonal), 1, BinaryReaderFile);
+	fread(&this->Frequency, sizeof(this->Frequency), 1, BinaryReaderFile);
+	fread(this->Size, sizeof(this->Size), 1, BinaryReaderFile);
+	fread(this->AspectRatio, sizeof(this->AspectRatio), 1, BinaryReaderFile);
 	return;
 }
 
-void OutputAllInfoAboutMonitor(Monitor CurrentMonitor)
+Monitor::Monitor() : Product()
 {
-	OutputAllInfoAboutProduct(CurrentMonitor.General);
-	printf("Диагональ матрицы (в дюймах): %d\n", CurrentMonitor.Diagonal);
-	printf("Частота обновления экрана (в герцах): %d\n", CurrentMonitor.Frequency);
-	printf("Разрешение экрана: %d x %d\n", CurrentMonitor.Size[0], CurrentMonitor.Size[1]);
-	printf("Соотношение сторон: %d:%d\n", CurrentMonitor.AspectRatio[0], CurrentMonitor.AspectRatio[1]);
+	this->Diagonal = 0;
+	this->Frequency = 0;
+	this->Size[0] = 0;
+	this->Size[1] = 0;
+	this->AspectRatio[0] = 0;
+	this->AspectRatio[1] = 0;
 	return;
 }
 
-int SaveMonitor(Monitor CurrentProduct, char* Path)
+Monitor::Monitor(Product General) : Product(General)
 {
-	if (Path == NULL)
-		return 0;
-	FILE* FileOfProduct = fopen(Path, "wb");
-	if (FileOfProduct != NULL)
-	{
-		WriteMonitorInFile(CurrentProduct, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
-		return 1;
-	}
-	else
-		return 0;
+	this->Diagonal = 0;
+	this->Frequency = 0;
+	this->Size[0] = 0;
+	this->Size[1] = 0;
+	this->AspectRatio[0] = 0;
+	this->AspectRatio[1] = 0;
+	return;
 }
 
-int SaveNewMonitor(Monitor CurrentProduct, char* Path)
+Monitor::Monitor(Product General, int Diagonal, int Frequency, int Size[2], int AspectRatio[2]) : Monitor(General)
 {
-	if (Path == NULL)
-		return 0;
-	FILE* NewProduct = fopen(Path, "rb");
-	if (NewProduct != NULL)
-	{
-		fclose(NewProduct);
-		NewProduct = NULL;
-		return -1;
-	}
-	else
-		return SaveMonitor(CurrentProduct, Path);
+	SetDiagonal(Diagonal);
+	SetFrequency(Frequency);
+	SetSize(Size[0], Size[1]);
+	SetAspectRatio(AspectRatio[0], AspectRatio[1]);
+	return;
 }
 
-int WriteMonitorInFile(Monitor CurrentProduct, FILE* BinaryWriterFile)
+Monitor::Monitor(const Monitor& Obj) : Product(Obj)
 {
-	if (BinaryWriterFile != NULL)
-	{
-		fwrite(&CurrentProduct, sizeof(Monitor), 1, BinaryWriterFile);
-		return 1;
-	}
-	else
-		return 0;
+	SetDiagonal(Obj.Diagonal);
+	SetFrequency(Obj.Frequency);
+	SetSize(Obj.Size[0], Obj.Size[1]);
+	SetAspectRatio(Obj.AspectRatio[0], Obj.AspectRatio[1]);
+	return;
 }
 
-int LoadMonitor(Monitor* CurrentProduct, char* Path)
+Monitor::~Monitor()
 {
-	if (Path == NULL)
-		return 0;
-	if (CurrentProduct == NULL)
-		return -1;
-
-	FILE* FileOfProduct = fopen(Path, "rb");
-	if (FileOfProduct != NULL)
-	{
-		ReadMonitorFromFile(CurrentProduct, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
-		return 1;
-	}
-	else
-		return 0;
+	return;
 }
 
-int ReadMonitorFromFile(Monitor* CurrentProduct, FILE* BinaryReaderFile)
+bool Monitor::SetDiagonal(int Diagonal)
 {
-	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
-		return 0;
-	if (fread(CurrentProduct, sizeof(Monitor), 1, BinaryReaderFile) == 1)
-		return 1;
+	if (Diagonal >= 0)
+	{
+		this->Diagonal = Diagonal;
+		return true;
+	}
 	else
-		return -1;
+		return false;
+}
+
+bool Monitor::SetFrequency(int Frequency)
+{
+	if (Frequency >= 0)
+	{
+		this->Frequency = Frequency;
+		return true;
+	}
+	else
+		return false;
+}
+
+bool Monitor::SetSize(int Width, int Height)
+{
+	if (Width >= 0 && Height >= 0)
+	{
+		this->Size[0] = Width;
+		this->Size[1] = Height;
+	}
+	else
+		return false;
+}
+
+bool Monitor::SetAspectRatio(int AspectRatio1, int AspectRatio2)
+{
+	if (AspectRatio1 >= 0 && AspectRatio2 >= 0)
+	{
+		this->AspectRatio[0] = AspectRatio1;
+		this->AspectRatio[1] = AspectRatio2;
+		return true;
+	}
+	else
+		return false;
+}
+
+int Monitor::GetDiagonal()
+{
+	return this->Diagonal;
+}
+
+int Monitor::GetFrequency()
+{
+	return this->Frequency;
+}
+
+void Monitor::GetSize(int* Width, int* Height)
+{
+	if (Width != NULL)
+		*Width = this->Size[0];
+	if (Height != NULL)
+		*Height = this->Size[1];
+	return;
+}
+
+void Monitor::GetAspectRation(int* AspectRatio1, int* AspectRatio2)
+{
+	if (AspectRatio1 != NULL)
+		*AspectRatio1 = this->AspectRatio[0];
+	if (AspectRatio2 != NULL)
+		*AspectRatio2 = this->AspectRatio[1];
+	return;
 }

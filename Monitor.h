@@ -3,45 +3,44 @@
 #include <iostream>
 #include "Product.h"
 
-typedef struct {
+class Monitor : public Product {
+private:
 	Product General;
 	int Diagonal;		//Диагональ матрицы в дюймах
 	int Frequency;		//Частота обновления экрана монитора в герцах
 	int Size[2];		//Разрешение экрана (число пикселей по горизонтали и вертикали)
 	int AspectRatio[2];	//Соотношение сторон (16:9/16:10...)
-}Monitor;
+public:
+	Monitor();
+	Monitor(Product General);
+	Monitor(Product General, int Diagonal, int Frequency, int Size[2], int AspectRatio[2]);
+	Monitor(const Monitor& Obj);
+	~Monitor();
 
-Monitor InitMonitor();
-Monitor InitMonitor(Product General);
-Monitor InitMonitor(Product General, int Diagonal, int Frequency, int Size[2], int AspectRatio[2]);
+	bool SetDiagonal(int Diagonal);
+	bool SetFrequency(int Frequency);
+	bool SetSize(int Width, int Height);
+	bool SetAspectRatio(int AspectRatio1, int AspectRatio2);
 
-int SetMonitorGeneral(Monitor* CurrentMonitor, Product General);
-int SetMonitorDiagonal(Monitor* CurrentMonitor, int Diagonal);
-int SetMonitorFrequency(Monitor* CurrentMonitor, int Frequency);
-int SetMonitorSize(Monitor* CurrentMonitor, int Width, int Height);
-int SetMonitorAspectRatio(Monitor* CurrentMonitor, int AspectRatio1, int AspectRatio2);
+	int GetDiagonal();
+	int GetFrequency();
+	void GetSize(int* Width, int* Height);
+	void GetAspectRation(int* AspectRatio1, int* AspectRatio2);
 
-Product GetMonitorGeneral(Monitor CurrentMonitor);
-int GetMonitorDiagonal(Monitor CurrentMonitor);
-int GetMonitorFrequency(Monitor CurrentMonitor);
-void GetMonitorSize(Monitor CurrentMonitor, int* Width, int* Height);
-void GetMonitorAspectRatio(Monitor CurrentMonitor, int* AspectRatio1, int* AspectRatio2);
+	void OutputAllInfo();
 
-void OutputAllInfoAboutMonitor(Monitor CurrentMonitor);
-
-/*Сохраняет информацию о товаре в файл (путь - Path)
-Возврат: 1 - успешно; 0 - файл не открылся*/
-int SaveMonitor(Monitor CurrentProduct, char* Path);
-/*Сохраняет информацию о новом товаре в файл (путь - Path)
-Возврат: 1 - успешно; 0 - файл не открылся; -1 - файл уже существует*/
-int SaveNewMonitor(Monitor CurrentProduct, char* Path);
-/*Записывает данные о товаре в открытый для записи бинарный поток
-Возврат: 1 - данные были записаны; 0 - передан нулевой указатель на поток*/
-int WriteMonitorInFile(Monitor CurrentProduct, FILE* BinaryWriterFile);
-
-/*Считать данные о товаре из файла (путь - Path)
-Возврат: 1 - успешно; 0 - файла не существует или недоступен; -1 - передан нулевой указатель на структуру*/
-int LoadMonitor(Monitor* CurrentProduct, char* Path);
-/*Считывает данные о товаре из бинарного потока, открытого на чтение
-Возврат: 1 - успешно; -1 - достигнут конец потока; 0 - передан нулевой указатель на файл или структуру*/
-int ReadMonitorFromFile(Monitor* CurrentProduct, FILE* BinaryReaderFile);
+	/*Сохраняет данные в файл (путь - Path)
+	Возврат: 1 - успешно; 0 - файл не открылся*/
+	int Save(char* Path);
+	/*Записывает данные в новый файл.
+	Возврат: 1 - успешно; 0 - файл не открылся; -1 - файл существует*/
+	int SaveNew(char* Path);
+	/*Записывает данные в открытый для записи бинарный поток.
+	Возврат: 1 - успешно; 0 - передан нулевой указатель на поток*/
+	int WriteInFile(FILE* BinaryWriterFile);
+	/*Возврат: 1 - успешно; 0 - передан нулевой указатели пути файла; -1 - файл не найден*/
+	int Load(char* Path);
+	/*Прочитать содержимое бинарного потока, открытого на чтение
+	Возврат: 0 - передан нулевой указатель на поток; 1 - успешно*/
+	int ReadFromFile(FILE* BinaryReaderFile);
+};
