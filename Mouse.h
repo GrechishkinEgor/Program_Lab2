@@ -4,47 +4,46 @@
 #include "Product.h"
 
 #define MOUSE_TYPE_OF_CONNECTION_SIZE 64
-typedef struct {
-	Product General;
+class Mouse : Product
+{
+private:
 	char TypeOfConnection[MOUSE_TYPE_OF_CONNECTION_SIZE];	//Проводная/беспроводная
 	int LengthOfCable;										//Длина кабеля в сантиметрах (если нет кабеля - равно 0)
 	int Sensitivity;										//Чувствительность (разрешение датчика) - dpi
 	int CountOfButtons;										//Количество кнопок
-}Mouse;
 
-Mouse InitMouse();
-Mouse InitMouse(Product General);
-Mouse InitMouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection, int LengthOfCable);
-Mouse InitMouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection);
+public:
+	Mouse();
+	Mouse(Product General);
+	Mouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection);
+	Mouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection, int LengthOfCable);
+	Mouse(const Mouse& Obj);
+	~Mouse();
 
-int SetMouseTypeOfConnection(Mouse* CurrentMouse, char* TypeOfConnection);
-int SetMouseLengthOfCable(Mouse* CurrentMouse, int LenghtOfCable);
-int SetMouseSensitivity(Mouse* CurrentMouse, int Sensitivity);
-int SetMouseCountOfButtons(Mouse* CurrentMouse, int Count);
-int SetMouseGeneral(Mouse* CurrentMouse, Product General);
+	bool SetTypeOfConnection(const char* Type);
+	bool SetLengthOfCable(int Length);
+	bool SetSensitivity(int Sensitivity);
+	bool SetCountOfButtons(int Count);
 
-void GetMouseTypeOfConnection(Mouse CurrentMouse, char* TypeOfConnection);
-int GetMouseLenghtOfCable(Mouse CurrentMouse);
-int GetMouseSensitivity(Mouse CurrentMouse);
-int GetMouseCountOfButtons(Mouse CurrentMouse);
-Product GetMouseGeneral(Mouse CurrentMouse);
+	void GetTypeOfConnection(char* Type);
+	int GetLengthOfCable();
+	int GetSensitivity();
+	int GetCountOfButtons();
 
-/*Вывод всей информации о мыши на экран*/
-void OutputAllInfoAboutMouse(Mouse CurrentMouse);
+	void OutputAllInfo();
 
-/*Сохраняет информацию в файл (путь - Path)
-Возврат: 1 - успешно; 0 - файл не открылся*/
-int SaveMouse(Mouse CurrentProduct, char* Path);
-/*Сохраняет информацию в файл (путь - Path)
-Возврат: 1 - успешно; 0 - файл не открылся; -1 - файл уже существует*/
-int SaveNewMouse(Mouse CurrentProduct, char* Path);
-/*Записывает данные в открытый для записи бинарный поток
-Возврат: 1 - данные были записаны; 0 - передан нулевой указатель на поток*/
-int WriteMouseInFile(Mouse CurrentProduct, FILE* BinaryWriterFile);
-
-/*Считать данные из файла (путь - Path)
-Возврат: 1 - успешно; 0 - файла не существует или недоступен; -1 - передан нулевой указатель на структуру*/
-int LoadMouse(Mouse* CurrentProduct, char* Path);
-/*Считывает данные из бинарного потока, открытого на чтение
-Возврат: 1 - успешно; -1 - достигнут конец потока; 0 - передан нулевой указатель на файл или структуру*/
-int ReadMouseFromFile(Mouse* CurrentProduct, FILE* BinaryReaderFile);
+	/*Сохраняет данные в файл (путь - Path)
+	Возврат: 1 - успешно; 0 - файл не открылся*/
+	int Save(char* Path);
+	/*Записывает данные в новый файл.
+	Возврат: 1 - успешно; 0 - файл не открылся; -1 - файл существует*/
+	int SaveNew(char* Path);
+	/*Записывает данные в открытый для записи бинарный поток.
+	Возврат: 1 - успешно; 0 - передан нулевой указатель на поток*/
+	int WriteInFile(FILE* BinaryWriterFile);
+	/*Возврат: 1 - успешно; 0 - передан нулевой указатели пути файла; -1 - файл не найден*/
+	int Load(char* Path);
+	/*Прочитать содержимое бинарного потока, открытого на чтение
+	Возврат: 0 - передан нулевой указатель на поток; 1 - успешно*/
+	int ReadFromFile(FILE* BinaryReaderFile);
+};
