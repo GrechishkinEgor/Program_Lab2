@@ -140,23 +140,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="keyboardClass.cpp" />
     <ClCompile Include="Monitor.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Printer.cpp" />
     <ClCompile Include="Product.cpp" />
-    <ClCompile Include="productClass.cpp" />
     <ClCompile Include="Program.cpp" />
-    <ClCompile Include="ProgramWithClasses.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keyboard.h" />
-    <ClInclude Include="keyboardClass.h" />
     <ClInclude Include="Monitor.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Printer.h" />
     <ClInclude Include="Product.h" />
-    <ClInclude Include="productClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
