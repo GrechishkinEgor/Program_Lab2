@@ -126,7 +126,7 @@ int Keyboard::WriteInFile(FILE* BinaryWriterFile)
 	Product::WriteInFile(BinaryWriterFile);
 	fwrite(this->TypeOfConnection, sizeof(this->TypeOfConnection), 1, BinaryWriterFile);
 	fwrite(&this->LengthOfCable, sizeof(this->LengthOfCable), 1, BinaryWriterFile);
-	return;
+	return 1;
 }
 
 int Keyboard::Load(char* Path)
@@ -153,5 +153,5 @@ int Keyboard::ReadFromFile(FILE* BinaryReaderFile)
 	Product::ReadFromFile(BinaryReaderFile);
 	fread(this->TypeOfConnection, sizeof(this->TypeOfConnection), 1, BinaryReaderFile);
 	fread(&this->LengthOfCable, sizeof(this->LengthOfCable), 1, BinaryReaderFile);
-	return;
+	return 1;
 }

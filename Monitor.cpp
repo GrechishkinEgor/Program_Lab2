@@ -85,7 +85,7 @@ int Monitor::ReadFromFile(FILE* BinaryReaderFile)
 	fread(&this->Frequency, sizeof(this->Frequency), 1, BinaryReaderFile);
 	fread(this->Size, sizeof(this->Size), 1, BinaryReaderFile);
 	fread(this->AspectRatio, sizeof(this->AspectRatio), 1, BinaryReaderFile);
-	return;
+	return 1;
 }
 
 Monitor::Monitor() : Product()
@@ -161,6 +161,7 @@ bool Monitor::SetSize(int Width, int Height)
 	{
 		this->Size[0] = Width;
 		this->Size[1] = Height;
+		return true;
 	}
 	else
 		return false;

@@ -16,7 +16,7 @@ Printer::Printer(Product General) : Product(General)
 	return;
 }
 
-Printer::Printer(Product General, char* Type, int DPI, int PaperFormat) : Printer(General)
+Printer::Printer(Product General, const char* Type, int DPI, int PaperFormat) : Printer(General)
 {
 	this->SetTypeOfPrint(Type);
 	this->SetDPI(DPI);

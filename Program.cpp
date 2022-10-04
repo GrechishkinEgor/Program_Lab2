@@ -12,7 +12,7 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    char Type[] = "Беспроводная";
+    /*char Type[] = "Беспроводная";
     Product FirstProduct = InitProduct();
     Mouse FirstMouse = InitMouse(FirstProduct, 500, 2, Type);
     Monitor FirstMonitor = InitMonitor();
@@ -94,6 +94,6 @@ int main()
         ArrayOfMouse = NULL;
     }
 
-    
+    */
     return 0;
 }

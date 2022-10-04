@@ -18,7 +18,7 @@ Mouse::Mouse(Product General) : Product(General)
 	return;
 }
 
-Mouse::Mouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection) : Mouse(General)
+Mouse::Mouse(Product General, int Sensitivity, int CountButtons, const char* TypeOfConnection) : Mouse(General)
 {
 	this->SetSensitivity(Sensitivity);
 	this->SetCountOfButtons(CountButtons);
@@ -26,7 +26,7 @@ Mouse::Mouse(Product General, int Sensitivity, int CountButtons, char* TypeOfCon
 	return;
 }
 
-Mouse::Mouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection, int LengthOfCable) : Mouse(General, Sensitivity, CountButtons, TypeOfConnection)
+Mouse::Mouse(Product General, int Sensitivity, int CountButtons, const char* TypeOfConnection, int LengthOfCable) : Mouse(General, Sensitivity, CountButtons, TypeOfConnection)
 {
 	this->SetLengthOfCable(LengthOfCable);
 	return;

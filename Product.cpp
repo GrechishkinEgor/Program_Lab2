@@ -9,7 +9,7 @@ Product::Product()
 	return;
 }
 
-Product::Product(char* Name, char* Company, int Price) : Product()
+Product::Product(const char* Name, const char* Company, int Price) : Product()
 {
 	this->SetName(Name);
 	this->SetCompany(Company);
@@ -17,7 +17,7 @@ Product::Product(char* Name, char* Company, int Price) : Product()
 	return;
 }
 
-Product::Product(char* Name, char* Company, int Price, int Count) : Product(Name, Company, Price)
+Product::Product(const char* Name, const char* Company, int Price, int Count) : Product(Name, Company, Price)
 {
 	this->SetCount(Count);
 	return;
