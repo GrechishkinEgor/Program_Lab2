@@ -13,8 +13,8 @@ protected:
 	int Count;
 public:
 	Product();
-	Product(char* Name, char* Company, int Price);
-	Product(char* Name, char* Company, int Price, int Count);
+	Product(const char* Name, const char* Company, int Price);
+	Product(const char* Name, const char* Company, int Price, int Count);
 	Product(const Product& Obj);
 	~Product();
 

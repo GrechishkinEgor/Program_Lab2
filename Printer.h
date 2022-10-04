@@ -13,7 +13,7 @@ private:
 public:
 	Printer();
 	Printer(Product General);
-	Printer(Product General, char* Type, int DPI, int PaperFormat);
+	Printer(Product General, const char* Type, int DPI, int PaperFormat);
 	Printer(const Printer& Obj);
 	~Printer();
 

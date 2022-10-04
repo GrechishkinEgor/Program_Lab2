@@ -1,166 +1,157 @@
 #include "Keyboard.h"
 
-Keyboard InitKeyboard()
+Keyboard::Keyboard() : Product()
 {
-	Keyboard Init;
-	Init.TypeOfConnection[0] = '\0';
-	Init.LengthOfCable = 0;
-	Init.General = InitProduct();
-	return Init;
+	this->TypeOfConnection[0] = '\0';
+	this->LengthOfCable = 0;
+	return;
 }
 
-Keyboard InitKeyboard(Product General)
+Keyboard::Keyboard(Product General) : Product(General)
 {
-	Keyboard Init = InitKeyboard();
-	SetKeyboardGeneral(&Init, General);
-	return Init;
+	this->TypeOfConnection[0] = '\0';
+	this->LengthOfCable = 0;
+	return;
 }
 
-Keyboard InitKeyboard(Product General, char* TypeOfConnection, int LengthOfCable)
+Keyboard::Keyboard(Product General, const char* TypeOfConnection) : Keyboard(General)
 {
-	Keyboard Init = InitKeyboard(General);
-	SetKeyboardTypeOfConnection(&Init, TypeOfConnection);
-	SetKeyboardLengthOfCable(&Init, LengthOfCable);
-	return Init;
+	SetTypeOfConnection(TypeOfConnection);
+	return;
 }
 
-int SetKeyboardGeneral(Keyboard* CurrentKeyboard, Product General)
+Keyboard::Keyboard(Product General, const char* TypeOfConnection, int LengthOfCable) : Keyboard(General)
 {
-	if (CurrentKeyboard != NULL)
+	SetTypeOfConnection(TypeOfConnection);
+	SetLengthOfCable(LengthOfCable);
+	return;
+}
+
+Keyboard::Keyboard(const Keyboard& Obj) : Product(Obj)
+{
+	SetTypeOfConnection(Obj.TypeOfConnection);
+	SetLengthOfCable(Obj.LengthOfCable);
+	return;
+}
+
+Keyboard::~Keyboard()
+{
+	return;
+}
+
+bool Keyboard::SetTypeOfConnection(const char* Type)
+{
+	if (Type != NULL && strlen(Type) < KEYBOARD_TYPE_OF_CONNECTION_SIZE)
 	{
-		CurrentKeyboard->General = General;
-		return 1;
+		strcpy(this->TypeOfConnection, Type);
+		return true;
 	}
 	else
-		return 0;
+		return false;
 }
 
-int SetKeyboardTypeOfConnection(Keyboard* CurrentKeyboard, char* Type)
+bool Keyboard::SetLengthOfCable(int Length)
 {
-	if (CurrentKeyboard != NULL && Type != NULL && strlen(Type) < KEYBOARD_TYPE_OF_CONNECTION_SIZE)
+	if (Length >= 0)
 	{
-		strcpy(CurrentKeyboard->TypeOfConnection, Type);
-		return 1;
+		this->LengthOfCable = Length;
+		return true;
 	}
 	else
-		return 0;
+		return false;
 }
 
-int SetKeyboardLengthOfCable(Keyboard* CurrentKeyboard, int Length)
-{
-	if (CurrentKeyboard != NULL)
-	{
-		CurrentKeyboard->LengthOfCable = Length;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-Product GetKeyboardGeneral(Keyboard CurrentKeyboard)
-{
-	return CurrentKeyboard.General;
-}
-
-void GetKeyboardTypeOfConnection(Keyboard CurrentKeyboard, char* Type)
+void Keyboard::GetTypeOfConnection(char* Type)
 {
 	if (Type != NULL)
-		strcpy(Type, CurrentKeyboard.TypeOfConnection);
+		strcpy(Type, this->TypeOfConnection);
 	return;
 }
 
-int GetKeyboardLengthOfCable(Keyboard CurrentKeyboard)
+int Keyboard::GetLengthOfCable()
 {
-	return CurrentKeyboard.LengthOfCable;
+	return this->LengthOfCable;
 }
 
-Keyboard InitKeyboard(char* TypeOfConnection, int LengthOfCable)
+void Keyboard::OutputAllInfo()
 {
-	Keyboard Init = InitKeyboard();
-	if (TypeOfConnection != NULL && strlen(TypeOfConnection) < KEYBOARD_TYPE_OF_CONNECTION_SIZE)
-		strcpy(Init.TypeOfConnection, TypeOfConnection);
-	if (LengthOfCable > 0)
-		Init.LengthOfCable = LengthOfCable;
-	return Init;
-}
-
-void OutputAllInfoAboutKeyboard(Keyboard CurrentKeyboard)
-{
-	OutputAllInfoAboutProduct(CurrentKeyboard.General);
-	printf("Тип соединения: %s\n", CurrentKeyboard.TypeOfConnection);
-	if (CurrentKeyboard.LengthOfCable > 0)
-		printf("Длина кабеля: %d\n", CurrentKeyboard.LengthOfCable);
+	Product::OutputAllInfo();
+	printf("Тип соединения: %s\n", this->TypeOfConnection);
+	if (this->LengthOfCable > 0)
+		printf("Длина кабеля: %d\n", this->LengthOfCable);
 	return;
 }
 
+int Keyboard::Save(char* Path)
+{
+	if (Path != NULL)
+	{
+		FILE* Writer = fopen(Path, "wb");
+		if (Writer != NULL)
+		{
+			this->WriteInFile(Writer);
+			fclose(Writer);
+			Writer = NULL;
+			return 1;
+		}
+		else
+			return 0;
+	}
+	else
+		return 0;
+}
 
-int SaveKeyboard(Keyboard CurrentProduct, char* Path)
+int Keyboard::SaveNew(char* Path)
+{
+	if (Path != NULL)
+	{
+		FILE* Check = fopen(Path, "rb");
+		if (Check != NULL)
+		{
+			fclose(Check);
+			Check = NULL;
+			return -1;
+		}
+		else
+			return this->Save(Path);
+	}
+	else
+		return 0;
+}
+
+int Keyboard::WriteInFile(FILE* BinaryWriterFile)
+{
+	if (BinaryWriterFile == NULL)
+		return 0;
+	Product::WriteInFile(BinaryWriterFile);
+	fwrite(this->TypeOfConnection, sizeof(this->TypeOfConnection), 1, BinaryWriterFile);
+	fwrite(&this->LengthOfCable, sizeof(this->LengthOfCable), 1, BinaryWriterFile);
+	return;
+}
+
+int Keyboard::Load(char* Path)
 {
 	if (Path == NULL)
 		return 0;
-	FILE* FileOfProduct = fopen(Path, "wb");
-	if (FileOfProduct != NULL)
+	FILE* Reader = fopen(Path, "rb");
+	if (Reader != NULL)
 	{
-		WriteKeyboardInFile(CurrentProduct, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
+		this->ReadFromFile(Reader);
+		fclose(Reader);
+		Reader = NULL;
 		return 1;
 	}
-	else
-		return 0;
-}
-
-int SaveNewKeyboard(Keyboard CurrentProduct, char* Path)
-{
-	if (Path == NULL)
-		return 0;
-	FILE* NewProduct = fopen(Path, "rb");
-	if (NewProduct != NULL)
-	{
-		fclose(NewProduct);
-		NewProduct = NULL;
-		return -1;
-	}
-	else
-		return SaveKeyboard(CurrentProduct, Path);
-}
-
-int WriteKeyboardInFile(Keyboard CurrentProduct, FILE* BinaryWriterFile)
-{
-	if (BinaryWriterFile != NULL)
-	{
-		fwrite(&CurrentProduct, sizeof(Keyboard), 1, BinaryWriterFile);
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int LoadKeyboard(Keyboard* CurrentProduct, char* Path)
-{
-	if (Path == NULL)
-		return 0;
-	if (CurrentProduct == NULL)
-		return -1;
-
-	FILE* FileOfProduct = fopen(Path, "rb");
-	if (FileOfProduct != NULL)
-	{
-		ReadKeyboardFromFile(CurrentProduct, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int ReadKeyboardFromFile(Keyboard* CurrentProduct, FILE* BinaryReaderFile)
-{
-	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
-		return 0;
-	if (fread(CurrentProduct, sizeof(Keyboard), 1, BinaryReaderFile) == 1)
-		return 1;
 	else
 		return -1;
+	return 0;
+}
+
+int Keyboard::ReadFromFile(FILE* BinaryReaderFile)
+{
+	if (BinaryReaderFile == NULL)
+		return 0;
+	Product::ReadFromFile(BinaryReaderFile);
+	fread(this->TypeOfConnection, sizeof(this->TypeOfConnection), 1, BinaryReaderFile);
+	fread(&this->LengthOfCable, sizeof(this->LengthOfCable), 1, BinaryReaderFile);
+	return;
 }

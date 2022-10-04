@@ -80,7 +80,7 @@ int Monitor::ReadFromFile(FILE* BinaryReaderFile)
 {
 	if (BinaryReaderFile == NULL)
 		return 0;
-	Product::WriteInFile(BinaryReaderFile);
+	Product::ReadFromFile(BinaryReaderFile);
 	fread(&this->Diagonal, sizeof(this->Diagonal), 1, BinaryReaderFile);
 	fread(&this->Frequency, sizeof(this->Frequency), 1, BinaryReaderFile);
 	fread(this->Size, sizeof(this->Size), 1, BinaryReaderFile);

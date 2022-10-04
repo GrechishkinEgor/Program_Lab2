@@ -15,8 +15,8 @@ private:
 public:
 	Mouse();
 	Mouse(Product General);
-	Mouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection);
-	Mouse(Product General, int Sensitivity, int CountButtons, char* TypeOfConnection, int LengthOfCable);
+	Mouse(Product General, int Sensitivity, int CountButtons, const char* TypeOfConnection);
+	Mouse(Product General, int Sensitivity, int CountButtons, const char* TypeOfConnection, int LengthOfCable);
 	Mouse(const Mouse& Obj);
 	~Mouse();
 
