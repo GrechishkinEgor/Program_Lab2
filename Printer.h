@@ -4,43 +4,41 @@
 #include "Product.h"
 
 #define PRINTER_TYPE_OF_PRINT_SIZE 64
-typedef struct {
-	Product General;
+class Printer : public Product
+{
+private:
 	char TypeOfPrint[PRINTER_TYPE_OF_PRINT_SIZE];	//Матричный/струйный/лазерный
 	int DPI;										//Разрешение
 	int PaperFormat;								//Размер бумаги (А4, А5...)
-}Printer;
+public:
+	Printer();
+	Printer(Product General);
+	Printer(Product General, char* Type, int DPI, int PaperFormat);
+	Printer(const Printer& Obj);
+	~Printer();
 
-Printer InitPrinter();
-Printer InitPrinter(Product General);
-Printer InitPrinter(Product General, char* Type, int DPI, int PaperFormat);
+	bool SetTypeOfPrint(const char* Type);
+	bool SetDPI(int DPI);
+	bool SetPaperFormat(int PaperFormat);
 
-int SetPrinterTypeOfPrint(Printer* CurrentPrinter, char* TypeOfPrint);
-int SetPrinterDPI(Printer* CurrentPrinter, int DPI);
-int SetPrinterPaperFormat(Printer* CurrentPrinter, int PaperFormat);
-int SetPrinterGeneral(Printer* CurrentPrinter, Product General);
+	void GetTypeOfPrint(char* Type);
+	int GetDPI();
+	int GetPaperFormat();
 
-void GetPrinterTypeOfPrint(Printer CurrentPrinter, char* TypeOfPrint);
-int GetPrinterDPI(Printer CurrentPrinter);
-int GetPrinterPaperFormat(Printer CurrentPrinter);
-Product GetPrinterGeneral(Printer CurrentPrinter);
+	void OutputAllInfo();
 
-/*Вывод всей информации о CurrentPrinter на экран*/
-void OutputAllInfoAboutPrinter(Printer CurrentPrinter);
-
-/*Сохраняет информацию о принтере в файл (путь - Path)
-Возврат: 1 - успешно; 0 - файл не открылся*/
-int SavePrinter(Printer CurrentProduct, char* Path);
-/*Сохраняет информацию о новом принтере в файл (путь - Path)
-Возврат: 1 - успешно; 0 - файл не открылся; -1 - файл уже существует*/
-int SaveNewPrinter(Printer CurrentProduct, char* Path);
-/*Записывает данные о принтере в открытый для записи бинарный поток
-Возврат: 1 - данные были записаны; 0 - передан нулевой указатель на поток*/
-int WritePrinterInFile(Printer CurrentProduct, FILE* BinaryWriterFile);
-
-/*Считать данные о принтере из файла (путь - Path)
-Возврат: 1 - успешно; 0 - файла не существует или недоступен; -1 - передан нулевой указатель на структуру*/
-int LoadPrinter(Printer* CurrentProduct, char* Path);
-/*Считывает данные о принтере из бинарного потока, открытого на чтение
-Возврат: 1 - успешно; -1 - достигнут конец потока; 0 - передан нулевой указатель на файл или структуру*/
-int ReadPrinterFromFile(Printer* CurrentProduct, FILE* BinaryReaderFile);
+	/*Сохраняет данные в файл (путь - Path)
+	Возврат: 1 - успешно; 0 - файл не открылся*/
+	int Save(char* Path);
+	/*Записывает данные в новый файл.
+	Возврат: 1 - успешно; 0 - файл не открылся; -1 - файл существует*/
+	int SaveNew(char* Path);
+	/*Записывает данные в открытый для записи бинарный поток.
+	Возврат: 1 - успешно; 0 - передан нулевой указатель на поток*/
+	int WriteInFile(FILE* BinaryWriterFile);
+	/*Возврат: 1 - успешно; 0 - передан нулевой указатели пути файла; -1 - файл не найден*/
+	int Load(char* Path);
+	/*Прочитать содержимое бинарного потока, открытого на чтение
+	Возврат: 0 - передан нулевой указатель на поток; 1 - успешно*/
+	int ReadFromFile(FILE* BinaryReaderFile);
+};

@@ -1,177 +1,173 @@
 #include "Printer.h"
 
-Printer InitPrinter()
+Printer::Printer() : Product()
 {
-	Printer Init;
-	Init.General = InitProduct();
-	Init.TypeOfPrint[0] = '\0';
-	Init.DPI = 0;
-	Init.PaperFormat = 4;
-	return Init;
-}
-
-Printer InitPrinter(Product General)
-{
-	Printer Init = InitPrinter();
-	Init.General = General;
-	return Init;
-}
-
-Printer InitPrinter(Product General, char* Type, int DPI, int PaperFormat)
-{
-	Printer Init;
-	Init = InitPrinter();
-	Init.General = General;
-	SetPrinterTypeOfPrint(&Init, Type);
-	SetPrinterDPI(&Init, DPI);
-	SetPrinterPaperFormat(&Init, PaperFormat);
-	return Init;
-}
-
-int SetPrinterTypeOfPrint(Printer* CurrentPrinter, char* TypeOfPrint)
-{
-	if (CurrentPrinter != NULL && TypeOfPrint != NULL && strlen(TypeOfPrint) < PRINTER_TYPE_OF_PRINT_SIZE)
-	{
-		strcpy(CurrentPrinter->TypeOfPrint, TypeOfPrint);
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int SetPrinterDPI(Printer* CurrentPrinter, int DPI)
-{
-	if (CurrentPrinter != NULL && DPI >= 0)
-	{
-		CurrentPrinter->DPI = DPI;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int SetPrinterPaperFormat(Printer* CurrentPrinter, int PaperFormat)
-{
-	if (CurrentPrinter != NULL && PaperFormat >= 0)
-	{
-		CurrentPrinter->PaperFormat = PaperFormat;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int SetPrinterGeneral(Printer* CurrentPrinter, Product General)
-{
-	if (CurrentPrinter != NULL)
-	{
-		CurrentPrinter->General = General;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-void GetPrinterTypeOfPrint(Printer CurrentPrinter, char* TypeOfPrint)
-{
-	if (TypeOfPrint != NULL)
-		strcpy(TypeOfPrint, CurrentPrinter.TypeOfPrint);
+	this->TypeOfPrint[0] = '\0';
+	this->DPI = 0;
+	this->PaperFormat = 0;
 	return;
 }
 
-int GetPrinterDPI(Printer CurrentPrinter)
+Printer::Printer(Product General) : Product(General)
 {
-	return CurrentPrinter.DPI;
-}
-
-int GetPrinterPaperFormat(Printer CurrentPrinter)
-{
-	return CurrentPrinter.PaperFormat;
-}
-
-Product GetPrinterGeneral(Printer CurrentPrinter)
-{
-	return CurrentPrinter.General;
-}
-
-void OutputAllInfoAboutPrinter(Printer CurrentPrinter)
-{
-	OutputAllInfoAboutProduct(CurrentPrinter.General);
-	printf("Тип по способу печати: %s\n", CurrentPrinter.TypeOfPrint);
-	printf("Разрешение (dpi): %d\n", CurrentPrinter.DPI);
-	printf("Формат бумаги: A%d\n", CurrentPrinter.PaperFormat);
+	this->TypeOfPrint[0] = '\0';
+	this->DPI = 0;
+	this->PaperFormat = 0;
 	return;
 }
 
-int SavePrinter(Printer CurrentProduct, char* Path)
+Printer::Printer(Product General, char* Type, int DPI, int PaperFormat) : Printer(General)
+{
+	this->SetTypeOfPrint(Type);
+	this->SetDPI(DPI);
+	this->SetPaperFormat(PaperFormat);
+	return;
+}
+
+Printer::Printer(const Printer& Obj) : Product(Obj)
+{
+	this->SetTypeOfPrint(Obj.TypeOfPrint);
+	this->SetDPI(Obj.DPI);
+	this->SetPaperFormat(Obj.PaperFormat);
+	return;
+}
+
+Printer::~Printer()
+{
+	return;
+}
+
+bool Printer::SetTypeOfPrint(const char* Type)
+{
+	if (Type != NULL && strlen(Type) < PRINTER_TYPE_OF_PRINT_SIZE)
+	{
+		strcpy(this->TypeOfPrint, Type);
+		return true;
+	}
+	else
+		return false;
+}
+
+bool Printer::SetDPI(int DPI)
+{
+	if (DPI >= 0)
+	{
+		this->DPI = DPI;
+		return true;
+	}
+	else
+		return false;
+}
+
+bool Printer::SetPaperFormat(int PaperFormat)
+{
+	if (PaperFormat >= 0)
+	{
+		this->PaperFormat = PaperFormat;
+		return true;
+	}
+	else
+		return false;
+}
+
+void Printer::GetTypeOfPrint(char* Type)
+{
+	if (Type != NULL)
+		strcpy(Type, this->TypeOfPrint);
+	return;
+}
+
+int Printer::GetDPI()
+{
+	return this->DPI;
+}
+
+int Printer::GetPaperFormat()
+{
+	return this->PaperFormat;
+}
+
+void Printer::OutputAllInfo()
+{
+	Product::OutputAllInfo();
+	printf("Тип по способу печати: %s\n", this->TypeOfPrint);
+	printf("Разрешение (dpi): %d\n", this->DPI);
+	printf("Формат бумаги: A%d\n", this->PaperFormat);
+	return;
+}
+
+int Printer::Save(char* Path)
+{
+	if (Path != NULL)
+	{
+		FILE* Writer = fopen(Path, "wb");
+		if (Writer != NULL)
+		{
+			this->WriteInFile(Writer);
+			fclose(Writer);
+			Writer = NULL;
+			return 1;
+		}
+		else
+			return 0;
+	}
+	else 
+		return 0;
+}
+
+int Printer::SaveNew(char* Path)
+{
+	if (Path != NULL)
+	{
+		FILE* Check = fopen(Path, "rb");
+		if (Check != NULL)
+		{
+			fclose(Check);
+			Check = NULL;
+			return -1;
+		}
+		else
+			return this->Save(Path);
+	}
+	else
+		return 0;
+}
+
+int Printer::WriteInFile(FILE* BinaryWriterFile)
+{
+	if (BinaryWriterFile == NULL)
+		return 0;
+	Product::WriteInFile(BinaryWriterFile);
+	fwrite(this->TypeOfPrint, sizeof(this->TypeOfPrint), 1, BinaryWriterFile);
+	fwrite(&this->DPI, sizeof(this->DPI), 1, BinaryWriterFile);
+	fwrite(&this->PaperFormat, sizeof(this->PaperFormat), 1, BinaryWriterFile);
+	return 1;
+}
+
+int Printer::Load(char* Path)
 {
 	if (Path == NULL)
 		return 0;
-	FILE* FileOfProduct = fopen(Path, "wb");
-	if (FileOfProduct != NULL)
+	FILE* Reader = fopen(Path, "rb");
+	if (Reader != NULL)
 	{
-		WritePrinterInFile(CurrentProduct, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
+		this->ReadFromFile(Reader);
+		fclose(Reader);
+		Reader = NULL;
 		return 1;
 	}
-	else
-		return 0;
-}
-
-int SaveNewPrinter(Printer CurrentProduct, char* Path)
-{
-	if (Path == NULL)
-		return 0;
-	FILE* NewProduct = fopen(Path, "rb");
-	if (NewProduct != NULL)
-	{
-		fclose(NewProduct);
-		NewProduct = NULL;
-		return -1;
-	}
-	else
-		return SavePrinter(CurrentProduct, Path);
-}
-
-int WritePrinterInFile(Printer CurrentProduct, FILE* BinaryWriterFile)
-{
-	if (BinaryWriterFile != NULL)
-	{
-		//Можно сначала вызвывать WriteProductInFIle(CurrentProduct.General, BinaryWriterFile)
-		//Затем записать оставшиеся поля Printer
-		fwrite(&CurrentProduct, sizeof(Printer), 1, BinaryWriterFile);
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int LoadPrinter(Printer* CurrentProduct, char* Path)
-{
-	if (Path == NULL)
-		return 0;
-	if (CurrentProduct == NULL)
-		return -1;
-
-	FILE* FileOfProduct = fopen(Path, "rb");
-	if (FileOfProduct != NULL)
-	{
-		ReadPrinterFromFile(CurrentProduct, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-int ReadPrinterFromFile(Printer* CurrentProduct, FILE* BinaryReaderFile)
-{
-	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
-		return 0;
-	if (fread(CurrentProduct, sizeof(Printer), 1, BinaryReaderFile) == 1)
-		return 1;
 	else
 		return -1;
+	return 0;
+}
+
+int Printer::ReadFromFile(FILE* BinaryReaderFile)
+{
+	if (BinaryReaderFile == NULL)
+		return 0;
+	Product::ReadFromFile(BinaryReaderFile);
+	fread(this->TypeOfPrint, sizeof(this->TypeOfPrint), 1, BinaryReaderFile);
+	fread(&this->DPI, sizeof(this->DPI), 1, BinaryReaderFile);
+	fread(&this->PaperFormat, sizeof(this->PaperFormat), 1, BinaryReaderFile);
+	return 1;
 }
