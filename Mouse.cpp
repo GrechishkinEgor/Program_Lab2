@@ -123,7 +123,7 @@ void Mouse::OutputAllInfo()
 	return;
 }
 
-int Mouse::Save(char* Path)
+int Mouse::Save(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -142,7 +142,7 @@ int Mouse::Save(char* Path)
 		return 0;
 }
 
-int Mouse::SaveNew(char* Path)
+int Mouse::SaveNew(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -172,7 +172,7 @@ int Mouse::WriteInFile(FILE* BinaryWriterFile)
 	return 1;
 }
 
-int Mouse::Load(char* Path)
+int Mouse::Load(const char* Path)
 {
 	if (Path == NULL)
 		return 0;

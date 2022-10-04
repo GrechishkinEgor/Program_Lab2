@@ -96,7 +96,7 @@ void Printer::OutputAllInfo()
 	return;
 }
 
-int Printer::Save(char* Path)
+int Printer::Save(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -115,7 +115,7 @@ int Printer::Save(char* Path)
 		return 0;
 }
 
-int Printer::SaveNew(char* Path)
+int Printer::SaveNew(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -144,7 +144,7 @@ int Printer::WriteInFile(FILE* BinaryWriterFile)
 	return 1;
 }
 
-int Printer::Load(char* Path)
+int Printer::Load(const char* Path)
 {
 	if (Path == NULL)
 		return 0;

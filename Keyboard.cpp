@@ -82,7 +82,7 @@ void Keyboard::OutputAllInfo()
 	return;
 }
 
-int Keyboard::Save(char* Path)
+int Keyboard::Save(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -101,7 +101,7 @@ int Keyboard::Save(char* Path)
 		return 0;
 }
 
-int Keyboard::SaveNew(char* Path)
+int Keyboard::SaveNew(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -129,7 +129,7 @@ int Keyboard::WriteInFile(FILE* BinaryWriterFile)
 	return 1;
 }
 
-int Keyboard::Load(char* Path)
+int Keyboard::Load(const char* Path)
 {
 	if (Path == NULL)
 		return 0;

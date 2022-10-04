@@ -10,7 +10,7 @@ void Monitor::OutputAllInfo()
 	return;
 }
 
-int Monitor::Save(char* Path)
+int Monitor::Save(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -29,7 +29,7 @@ int Monitor::Save(char* Path)
 		return 0;
 }
 
-int Monitor::SaveNew(char* Path)
+int Monitor::SaveNew(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -59,7 +59,7 @@ int Monitor::WriteInFile(FILE* BinaryWriterFile)
 	return 1;
 }
 
-int Monitor::Load(char* Path)
+int Monitor::Load(const char* Path)
 {
 	if (Path == NULL)
 		return 0;

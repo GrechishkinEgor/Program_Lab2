@@ -123,7 +123,7 @@ void Product::OutputAllInfo()
 	return;
 }
 
-int Product::Save(char* Path)
+int Product::Save(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -131,6 +131,8 @@ int Product::Save(char* Path)
 		if (Writer != NULL)
 		{
 			this->WriteInFile(Writer);
+			fclose(Writer);
+			Writer = NULL;
 			return 1;
 		}
 		else
@@ -140,7 +142,7 @@ int Product::Save(char* Path)
 		return 0;
 }
 
-int Product::SaveNew(char* Path)
+int Product::SaveNew(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -152,7 +154,7 @@ int Product::SaveNew(char* Path)
 			return -1;
 		}
 		else
-			this->Save(Path);
+			return this->Save(Path);
 	}
 	else
 		return 0;
@@ -172,7 +174,7 @@ int Product::WriteInFile(FILE* BinaryWriterFile)
 		return 0;
 }
 
-int Product::Load(char* Path)
+int Product::Load(const char* Path)
 {
 	if (Path != NULL)
 	{
@@ -199,6 +201,7 @@ int Product::ReadFromFile(FILE* BinaryReaderFile)
 		fread(this->Company, sizeof(this->Company), 1, BinaryReaderFile);
 		fread(&this->Price, sizeof(this->Price), 1, BinaryReaderFile);
 		fread(&this->Count, sizeof(this->Count), 1, BinaryReaderFile);
+		return 1;
 	}
 	else
 		return 0;
