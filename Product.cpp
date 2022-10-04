@@ -1,191 +1,205 @@
 #include "Product.h"
 
-Product InitProduct()
+Product::Product()
 {
-	Product Init;
-	Init.Name[0] = '\0';
-	Init.Company[0] = '\0';
-	Init.Price = 0;
-	Init.Count = 0;
-	return Init;
+	this->Name[0] = '\0';
+	this->Company[0] = '\0';
+	this->Price = 0;
+	this->Count = 0;
+	return;
 }
 
-Product InitProduct(char* Name, char* Company, int Price)
+Product::Product(char* Name, char* Company, int Price) : Product()
 {
-	Product Init = InitProduct();
-	SetProductName(&Init, Name);
-	SetProductCompany(&Init, Company);
-	SetProductPrice(&Init, Price);
-	return Init;
+	this->SetName(Name);
+	this->SetCompany(Company);
+	this->SetPrice(Price);
+	return;
 }
 
-Product InitProduct(char* Name, char* Company, int Price, int Count)
+Product::Product(char* Name, char* Company, int Price, int Count) : Product(Name, Company, Price)
 {
-	Product Init = InitProduct(Name, Company, Price);
-	SetProductCount(&Init, Count);
-	return Init;
+	this->SetCount(Count);
+	return;
 }
 
-int SetProductName(Product* CurrentProduct, char* Name)
+Product::Product(const Product& Obj) : Product()
 {
-	if (CurrentProduct != NULL && Name != NULL && strlen(Name) < PRODUCT_NAME_MAX_SIZE)
+	this->SetName(Obj.Name);
+	this->SetCompany(Obj.Company);
+	this->SetPrice(Obj.Price);
+	this->SetCount(Obj.Count);
+	return;
+}
+
+Product::~Product()
+{
+	return;
+}
+
+bool Product::SetName(const char* Name)
+{
+	if (Name != NULL && strlen(Name) < PRODUCT_NAME_MAX_SIZE)
 	{
-		strcpy(CurrentProduct->Name, Name);
-		return 1;
+		strcpy(this->Name, Name);
+		return true;
 	}
 	else
-		return 0;
+		return false;
 }
 
-int SetProductCompany(Product* CurrentProduct, char* Company)
+bool Product::SetCompany(const char* Company)
 {
-	if (CurrentProduct != NULL && Company != NULL && strlen(Company) < PRODUCT_COMPANY_MAX_SIZE)
+	if (Company != NULL && strlen(Company) < PRODUCT_COMPANY_MAX_SIZE)
 	{
-		strcpy(CurrentProduct->Company, Company);
-		return 1;
+		strcpy(this->Company, Company);
+		return true;
+	}
+	return false;
+}
+
+bool Product::SetPrice(int Price)
+{
+	if (Price >= 0)
+	{
+		this->Price = Price;
+		return true;
 	}
 	else
-		return 0;
+		return false;
 }
 
-int SetProductPrice(Product* CurrentProduct, int Price)
+bool Product::SetCount(int Count)
 {
-	if (CurrentProduct != NULL && Price >= 0)
+	if (Count >= 0)
 	{
-		CurrentProduct->Price = Price;
-		return 1;
+		this->Count = Count;
+		return true;
 	}
 	else
-		return 0;
+		return false;
 }
 
-int SetProductCount(Product* CurrentProduct, int Count)
-{
-	if (CurrentProduct != NULL && Count >= 0)
-	{
-		CurrentProduct->Count = Count;
-		return 1;
-	}
-	else
-		return 0;
-}
-
-void GetProductName(Product CurrentProduct, char* Name)
+void Product::GetName(char* Name)
 {
 	if (Name != NULL)
-		strcpy(Name, CurrentProduct.Name);
+		strcpy(Name, this->Name);
 	return;
 }
 
-void GetProductCompany(Product CurrentProduct, char* Company)
+void Product::GetCompany(char* Company)
 {
 	if (Company != NULL)
-		strcpy(Company, CurrentProduct.Company);
+		strcpy(Company, this->Company);
 	return;
 }
 
-int GetProductPrice(Product CurrentProduct)
+int Product::GetPrice()
 {
-	return CurrentProduct.Price;
+	return this->Price;
 }
 
-int GetProductCount(Product CurrentProduct)
+int Product::GetCount()
 {
-	return CurrentProduct.Count;
+	return this->Count;
 }
 
-int IncreaseCountOfProduct(Product* CurrentProduct)
+bool Product::IncreaseCount()
 {
-	if (CurrentProduct != NULL)
-		return SetProductCount(CurrentProduct, CurrentProduct->Count + 1);
-	else
-		return 0;
+	return this->SetCount(this->Count + 1);
 }
 
-int DecreaseCountOfProduct(Product* CurrentProduct)
+bool Product::DecreaseCount()
 {
-	if (CurrentProduct != NULL)
-		return SetProductCount(CurrentProduct, CurrentProduct->Count - 1);
-	else
-		return 0;
+	return this->SetCount(this->Count - 1);
 }
 
-void OutputAllInfoAboutProduct(Product CurrentProduct)
+void Product::OutputAllInfo()
 {
-	printf("Название товара: %s\n", CurrentProduct.Name);
-	printf("Компания-производитель: %s\n", CurrentProduct.Company);
-	printf("Цена товара (в рублях): %g\n", CurrentProduct.Price / 100.0);
-	printf("Количество товара (штук): %d\n", CurrentProduct.Count);
+	printf("Название товара: %s\n", this->Name);
+	printf("Компания-производитель: %s\n", this->Company);
+	printf("Цена товара (в рублях): %g\n", this->Price / 100.0);
+	printf("Количество товара (штук): %d\n", this->Count);
 	return;
 }
 
-int SaveProduct(Product CurrentProduct, char* Path)
+int Product::Save(char* Path)
 {
-	if (Path == NULL)
-		return 0;
-	FILE* FileOfProduct = fopen(Path, "wb");
-	if (FileOfProduct != NULL)
+	if (Path != NULL)
 	{
-		WriteProductInFile(CurrentProduct, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
-		return 1;
+		FILE* Writer = fopen(Path, "wb");
+		if (Writer != NULL)
+		{
+			this->WriteInFile(Writer);
+			return 1;
+		}
+		else
+			return 0;
 	}
 	else
 		return 0;
 }
 
-int SaveNewProduct(Product CurrentProduct, char* Path)
+int Product::SaveNew(char* Path)
 {
-	if (Path == NULL)
-		return 0;
-	FILE* NewProduct = fopen(Path, "rb");
-	if (NewProduct != NULL)
+	if (Path != NULL)
 	{
-		fclose(NewProduct);
-		NewProduct = NULL;
-		return -1;
+		FILE* Check = fopen(Path, "rb");
+		if (Check != NULL)
+		{
+			fclose(Check);
+			Check = NULL;
+			return -1;
+		}
+		else
+			this->Save(Path);
 	}
 	else
-		return SaveProduct(CurrentProduct, Path);
+		return 0;
 }
 
-int WriteProductInFile(Product CurrentProduct, FILE* BinaryWriterFile)
+int Product::WriteInFile(FILE* BinaryWriterFile)
 {
 	if (BinaryWriterFile != NULL)
 	{
-		fwrite(&CurrentProduct, sizeof(Product), 1, BinaryWriterFile);
+		fwrite(this->Name, sizeof(this->Name), 1, BinaryWriterFile);
+		fwrite(this->Company, sizeof(this->Company), 1, BinaryWriterFile);
+		fwrite(&this->Price, sizeof(this->Price), 1, BinaryWriterFile);
+		fwrite(&this->Count, sizeof(this->Count), 1, BinaryWriterFile);
 		return 1;
 	}
 	else
 		return 0;
 }
 
-int LoadProduct(Product* CurrentProduct, char* Path)
+int Product::Load(char* Path)
 {
-	if (Path == NULL)
-		return 0;
-	if (CurrentProduct == NULL)
-		return -1;
-
-	FILE* FileOfProduct = fopen(Path, "rb");
-	if (FileOfProduct != NULL)
+	if (Path != NULL)
 	{
-		ReadProductFromFile(CurrentProduct, FileOfProduct);
-		fclose(FileOfProduct);
-		FileOfProduct = NULL;
-		return 1;
+		FILE* Reader = fopen(Path, "rb");
+		if (Reader != NULL)
+		{
+			this->ReadFromFile(Reader);
+			fclose(Reader);
+			Reader = NULL;
+			return 1;
+		}
+		else
+			return -1;
 	}
 	else
 		return 0;
 }
 
-int ReadProductFromFile(Product* CurrentProduct, FILE* BinaryReaderFile)
+int Product::ReadFromFile(FILE* BinaryReaderFile)
 {
-	if (CurrentProduct == NULL || BinaryReaderFile == NULL)
-		return 0;
-	if (fread(CurrentProduct, sizeof(Product), 1, BinaryReaderFile) == 1)
-		return 1;
+	if (BinaryReaderFile != NULL)
+	{
+		fread(this->Name, sizeof(this->Name), 1, BinaryReaderFile);
+		fread(this->Company, sizeof(this->Company), 1, BinaryReaderFile);
+		fread(&this->Price, sizeof(this->Price), 1, BinaryReaderFile);
+		fread(&this->Count, sizeof(this->Count), 1, BinaryReaderFile);
+	}
 	else
-		return -1;
+		return 0;
 }
