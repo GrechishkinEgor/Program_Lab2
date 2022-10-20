@@ -11,6 +11,9 @@ protected:
 	char Company[PRODUCT_COMPANY_MAX_SIZE];
 	int Price;
 	int Count;
+
+	static int TotalCount;
+	static bool EditTotalCount(int PreviousCount, int CurrentCount);
 public:
 	Product();
 	Product(const char* Name, const char* Company, int Price);
@@ -32,6 +35,14 @@ public:
 	bool DecreaseCount();
 
 	void OutputAllInfo();
+	friend void OutputTableOfProduct(Product* List, int size);
+
+	int operator++();
+	int operator++(int);
+	int operator--();
+	int operator--(int);
+
+	static int GetTotalCount();
 
 	/*Сохраняет данные в файл (путь - Path)
 	Возврат: 1 - успешно; 0 - файл не открылся*/
@@ -48,3 +59,5 @@ public:
 	Возврат: 0 - передан нулевой указатель на поток; 1 - успешно*/
 	int ReadFromFile(FILE* BinaryReaderFile);
 };
+
+void OutputTableOfProduct(Product* List, int size);

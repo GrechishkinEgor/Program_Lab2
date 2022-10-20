@@ -1,4 +1,16 @@
 #include "Product.h"
+int Product::TotalCount = 0;
+
+bool Product::EditTotalCount(int PreviousCount, int CurrentCount)
+{
+	if (Product::TotalCount + CurrentCount - PreviousCount >= 0)
+	{
+		Product::TotalCount += CurrentCount - PreviousCount;
+		return true;
+	}
+	else
+		return false;
+}
 
 Product::Product()
 {
@@ -34,6 +46,7 @@ Product::Product(const Product& Obj) : Product()
 
 Product::~Product()
 {
+	Product::EditTotalCount(this->Count, 0);
 	return;
 }
 
@@ -73,7 +86,9 @@ bool Product::SetCount(int Count)
 {
 	if (Count >= 0)
 	{
+		int PreviousCount = this->Count;
 		this->Count = Count;
+		Product::EditTotalCount(PreviousCount, this->Count);
 		return true;
 	}
 	else
@@ -102,6 +117,37 @@ int Product::GetPrice()
 int Product::GetCount()
 {
 	return this->Count;
+}
+
+int Product::operator++()
+{
+	this->IncreaseCount();
+	return this->GetCount();
+}
+
+int Product::operator++(int)
+{
+	int LastCount = this->GetCount();
+	this->IncreaseCount();
+	return LastCount;
+}
+
+int Product::operator--()
+{
+	this->DecreaseCount();
+	return this->GetCount();
+}
+
+int Product::operator--(int)
+{
+	int LastCount = this->GetCount();
+	this->DecreaseCount();
+	return LastCount;
+}
+
+int Product::GetTotalCount()
+{
+	return Product::TotalCount;
 }
 
 bool Product::IncreaseCount()
@@ -205,4 +251,14 @@ int Product::ReadFromFile(FILE* BinaryReaderFile)
 	}
 	else
 		return 0;
+}
+
+void OutputTableOfProduct(Product* List, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		printf("| %*s | %*s | %11.2lf | %11d |\n", PRODUCT_NAME_MAX_SIZE, List[i].Name, PRODUCT_COMPANY_MAX_SIZE, List[i].Company,
+			List[i].Price / 100.0, List[i].Count);
+	}
+	return;
 }
