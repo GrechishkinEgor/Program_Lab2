@@ -12,32 +12,15 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-   /* Product FirstProduct, SecondProduct;
-    FirstProduct++;
-    SecondProduct++;
-    FirstProduct.SetPrice(500000);
-    SecondProduct.SetPrice(600000);
-    FirstProduct.AddInTotalCost();
-    SecondProduct.AddInTotalCost();
-    printf("Общая стоимость товаров: %g\n", Product::GetTotalCost() / 100.0);
-    Product* Array = new Product[3];
-    for (int i = 0; i < 3; i++)
-    {
-        Array[i].SetPrice(200000);
-        Array[i].SetCount(i + 1);
-    }
-    //Product::ResetTotalCost();
-    Product::CalculateTotalCost(Array, 3);
-    printf("Общая стоимость товаров: %g", Product::GetTotalCost() / 100.0);*/
-
-    Mouse FirstMouse;
-    FirstMouse.SetName("Mouse");
-    FirstMouse.SetSensitivity(500);
-    Product* MouseLikeProduct = &FirstMouse;
-    MouseLikeProduct->Save("MouseLikeProduct.txt");
-    Mouse SecondMouse;
-    SecondMouse.Load("MouseLikeProduct.txt");
-    SecondMouse.OutputAllInfo();
+    std::string Name = "TestString";
+    std::string Company = "TestString2";
+    Product FirstProduct;
+    FirstProduct.SetName(Name);
+    FirstProduct.SetCompany(Company);
+    FirstProduct.OutputAllInfo();
+    std::string ReturnName = FirstProduct.GetName();
+    std::string ReturnCompany = FirstProduct.GetCompany();
+    std::cout << "Название: " << ReturnName << "; Компания: " << ReturnCompany << std::endl;
 
     return 0;
 }

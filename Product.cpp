@@ -18,7 +18,21 @@ Product::Product(const char* Name, const char* Company, int Price) : Product()
 	return;
 }
 
+Product::Product(std::string Name, std::string Company, int Price) : Product()
+{
+	this->SetName(Name);
+	this->SetCompany(Company);
+	this->SetPrice(Price);
+	return;
+}
+
 Product::Product(const char* Name, const char* Company, int Price, int Count) : Product(Name, Company, Price)
+{
+	this->SetCount(Count);
+	return;
+}
+
+Product::Product(std::string Name, std::string Company, int Price, int Count) : Product(Name, Company, Price)
 {
 	this->SetCount(Count);
 	return;
@@ -49,6 +63,18 @@ bool Product::SetName(const char* Name)
 		return false;
 }
 
+bool Product::SetName(std::string Name)
+{
+	if (Name.length() < PRODUCT_NAME_MAX_SIZE)
+	{
+		Name.copy(this->Name, Name.length());
+		this->Name[Name.length()] = '\0';
+		return true;
+	}
+	else
+		return false;
+}
+
 bool Product::SetCompany(const char* Company)
 {
 	if (Company != NULL && strlen(Company) < PRODUCT_COMPANY_MAX_SIZE)
@@ -57,6 +83,18 @@ bool Product::SetCompany(const char* Company)
 		return true;
 	}
 	return false;
+}
+
+bool Product::SetCompany(std::string Company)
+{
+	if (Company.length() < PRODUCT_COMPANY_MAX_SIZE)
+	{
+		Company.copy(this->Company, Company.length());
+		this->Company[Company.length()] = '\0';
+		return true;
+	}
+	else
+		return false;
 }
 
 bool Product::SetPrice(int Price)
@@ -89,11 +127,21 @@ void Product::GetName(char* Name)
 	return;
 }
 
+std::string Product::GetName()
+{
+	return std::string(this->Name);
+}
+
 void Product::GetCompany(char* Company)
 {
 	if (Company != NULL)
 		strcpy(Company, this->Company);
 	return;
+}
+
+std::string Product::GetCompany()
+{
+	return std::string(this->Company);
 }
 
 int Product::GetPrice()
@@ -218,6 +266,21 @@ int Product::Save(const char* Path)
 		return 0;
 }
 
+int Product::Save(std::string Path)
+{
+	char* CPath = (char*)malloc(Path.length() + 1);
+	if (CPath != NULL)
+	{
+		Path.copy(CPath, Path.length());
+		CPath[Path.length()] = '\0';
+		int Result = this->Save(CPath);
+		free(CPath);
+		return Result;
+	}
+	else
+		return 0;
+}
+
 int Product::SaveNew(const char* Path)
 {
 	if (Path != NULL)
@@ -231,6 +294,21 @@ int Product::SaveNew(const char* Path)
 		}
 		else
 			return this->Save(Path);
+	}
+	else
+		return 0;
+}
+
+int Product::SaveNew(std::string Path)
+{
+	char* CPath = (char*)malloc(Path.length() + 1);
+	if (CPath != NULL)
+	{
+		Path.copy(CPath, Path.length());
+		CPath[Path.length()] = '\0';
+		int Result = this->SaveNew(CPath);
+		free(CPath);
+		return Result;
 	}
 	else
 		return 0;
@@ -264,6 +342,21 @@ int Product::Load(const char* Path)
 		}
 		else
 			return -1;
+	}
+	else
+		return 0;
+}
+
+int Product::Load(std::string Path)
+{
+	char* CPath = (char*)malloc(Path.length() + 1);
+	if (CPath != NULL)
+	{
+		Path.copy(CPath, Path.length());
+		CPath[Path.length()] = '\0';
+		int Result = this->Load(CPath);
+		free(CPath);
+		return Result;
 	}
 	else
 		return 0;

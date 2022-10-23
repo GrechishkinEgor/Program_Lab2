@@ -16,19 +16,25 @@ protected:
 public:
 	Product();
 	Product(const char* Name, const char* Company, int Price);
+	Product(std::string Name, std::string Company, int Price);
 	Product(const char* Name, const char* Company, int Price, int Count);
+	Product(std::string Name, std::string Company, int Price, int Count);
 	Product(const Product& Obj);
 	~Product();
 
 	bool SetName(const char* Name);
+	bool SetName(std::string Name);
 	bool SetCompany(const char* Company);
+	bool SetCompany(std::string Company);
 	bool SetPrice(int Price);
 	bool SetCount(int Count);
 	bool IncreaseCount();
 	bool DecreaseCount();
 
 	void GetName(char* Name);
+	std::string GetName();
 	void GetCompany(char* Company);
+	std::string GetCompany();
 	int GetPrice();
 	int GetCount();
 	void OutputAllInfo();
@@ -54,17 +60,18 @@ public:
 	/*Сохраняет данные в файл (путь - Path)
 	Возврат: 1 - успешно; 0 - файл не открылся*/
 	int Save(const char* Path);
+	int Save(std::string Path);
 	/*Записывает данные в новый файл.
 	Возврат: 1 - успешно; 0 - файл не открылся; -1 - файл существует*/
 	int SaveNew(const char* Path);
+	int SaveNew(std::string Path);
 	/*Записывает данные в открытый для записи бинарный поток. 
 	Возврат: 1 - успешно; 0 - передан нулевой указатель на поток*/
 	virtual int WriteInFile(FILE* BinaryWriterFile);
-	/*Возврат: 1 - успешно; 0 - передан нулевой указатели пути файла; -1 - файл не найден*/
+	/*Возврат: 1 - успешно; 0 - произошла ошибка (передан нулевой указатель пути файла); -1 - файл не найден*/
     int Load(const char* Path);
+	int Load(std::string Path);
 	/*Прочитать содержимое бинарного потока, открытого на чтение
 	Возврат: 0 - передан нулевой указатель на поток; 1 - успешно*/
 	virtual int ReadFromFile(FILE* BinaryReaderFile);
 };
-
-void OutputTableOfProduct(Product* List, int size);
