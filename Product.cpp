@@ -1,16 +1,5 @@
 #include "Product.h"
-int Product::TotalCount = 0;
-
-bool Product::EditTotalCount(int PreviousCount, int CurrentCount)
-{
-	if (Product::TotalCount + CurrentCount - PreviousCount >= 0)
-	{
-		Product::TotalCount += CurrentCount - PreviousCount;
-		return true;
-	}
-	else
-		return false;
-}
+int Product::TotalCost = 0;
 
 Product::Product()
 {
@@ -46,7 +35,6 @@ Product::Product(const Product& Obj) : Product()
 
 Product::~Product()
 {
-	Product::EditTotalCount(this->Count, 0);
 	return;
 }
 
@@ -88,7 +76,6 @@ bool Product::SetCount(int Count)
 	{
 		int PreviousCount = this->Count;
 		this->Count = Count;
-		Product::EditTotalCount(PreviousCount, this->Count);
 		return true;
 	}
 	else
@@ -145,9 +132,14 @@ int Product::operator--(int)
 	return LastCount;
 }
 
-int Product::GetTotalCount()
+int Product::operator+(Product obj)
 {
-	return Product::TotalCount;
+	return this->Count + obj.Count;
+}
+
+int Product::operator+(int Num)
+{
+	return this->Count + Num;
 }
 
 bool Product::IncreaseCount()
@@ -167,6 +159,44 @@ void Product::OutputAllInfo()
 	printf("Цена товара (в рублях): %g\n", this->Price / 100.0);
 	printf("Количество товара (штук): %d\n", this->Count);
 	return;
+}
+
+bool Product::AddInTotalCost()
+{
+	if (Product::TotalCost + this->Count * this->Price >= 0)
+	{
+		Product::TotalCost += this->Count * this->Price;
+		return true;
+	}
+	else
+		return false;
+}
+
+int Product::GetTotalCost()
+{
+	return Product::TotalCost;
+}
+
+void Product::ResetTotalCost()
+{
+	Product::TotalCost = 0;
+	return;
+}
+
+bool Product::CalculateTotalCost(Product* ArrayOfProduct, int Size)
+{
+	if (ArrayOfProduct == NULL)
+		return false;
+	int Cost = 0;
+	for (int i = 0; i < Size && Cost >= 0; i++)
+		Cost += ArrayOfProduct[i].Count * ArrayOfProduct[i].Price;
+	if (Cost >= 0 && Product::TotalCost + Cost >= 0)
+	{
+		Product::TotalCost += Cost;
+		return true;
+	}
+	else
+		return false;
 }
 
 int Product::Save(const char* Path)
@@ -261,4 +291,9 @@ void OutputTableOfProduct(Product* List, int size)
 			List[i].Price / 100.0, List[i].Count);
 	}
 	return;
+}
+
+int operator+(int Num, Product obj)
+{
+	return Num + obj.Count;
 }

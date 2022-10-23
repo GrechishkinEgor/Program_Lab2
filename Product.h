@@ -12,8 +12,7 @@ protected:
 	int Price;
 	int Count;
 
-	static int TotalCount;
-	static bool EditTotalCount(int PreviousCount, int CurrentCount);
+	static int TotalCost;	//Совокупная стоимость всех товаров
 public:
 	Product();
 	Product(const char* Name, const char* Company, int Price);
@@ -25,24 +24,34 @@ public:
 	bool SetCompany(const char* Company);
 	bool SetPrice(int Price);
 	bool SetCount(int Count);
+	bool IncreaseCount();
+	bool DecreaseCount();
 
 	void GetName(char* Name);
 	void GetCompany(char* Company);
 	int GetPrice();
 	int GetCount();
-
-	bool IncreaseCount();
-	bool DecreaseCount();
-
 	void OutputAllInfo();
+
+	/*Добавляет стоимость товара к совокупной стоимости всех товаров
+	Возврат: истина, если успешно; ложь, если произошла ошибка (совокупная стоимость не изменится)*/
+	bool AddInTotalCost();
+	static int GetTotalCost();
+	static void ResetTotalCost();	//Устанавливает совокупную стоимость в 0
+	/*Считает совокупную стоимость товаров из массива и добавляет её к совокупной стоимости всех товаров. 
+	Возврат: истина, если успешно. В этом случае посчитанная стоимость добавляется к совокупной стоимости; 
+	Ложь, если произошла ошибка - совокупная стоимость остается без изменений*/
+	static bool CalculateTotalCost(Product* ArrayOfProduct, int Size);
+
 	friend void OutputTableOfProduct(Product* List, int size);
 
 	int operator++();
 	int operator++(int);
 	int operator--();
 	int operator--(int);
-
-	static int GetTotalCount();
+	int operator+(Product obj);
+	int operator+(int Num);
+	friend int operator+ (int Num, Product obj);
 
 	/*Сохраняет данные в файл (путь - Path)
 	Возврат: 1 - успешно; 0 - файл не открылся*/
