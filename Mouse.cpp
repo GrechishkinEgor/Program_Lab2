@@ -123,43 +123,6 @@ void Mouse::OutputAllInfo()
 	return;
 }
 
-int Mouse::Save(const char* Path)
-{
-	if (Path != NULL)
-	{
-		FILE* Writer = fopen(Path, "wb");
-		if (Writer != NULL)
-		{
-			this->WriteInFile(Writer);
-			fclose(Writer);
-			Writer = NULL;
-			return 1;
-		}
-		else
-			return 0;
-	}
-	else
-		return 0;
-}
-
-int Mouse::SaveNew(const char* Path)
-{
-	if (Path != NULL)
-	{
-		FILE* Check = fopen(Path, "rb");
-		if (Check != NULL)
-		{
-			fclose(Check);
-			Check = NULL;
-			return -1;
-		}
-		else
-			return this->Save(Path);
-	}
-	else
-		return 0;
-}
-
 int Mouse::WriteInFile(FILE* BinaryWriterFile)
 {
 	if (BinaryWriterFile == NULL)
@@ -170,23 +133,6 @@ int Mouse::WriteInFile(FILE* BinaryWriterFile)
 	fwrite(&this->Sensitivity, sizeof(this->Sensitivity), 1, BinaryWriterFile);
 	fwrite(&this->CountOfButtons, sizeof(this->CountOfButtons), 1, BinaryWriterFile);
 	return 1;
-}
-
-int Mouse::Load(const char* Path)
-{
-	if (Path == NULL)
-		return 0;
-	FILE* Reader = fopen(Path, "rb");
-	if (Reader != NULL)
-	{
-		this->ReadFromFile(Reader);
-		fclose(Reader);
-		Reader = NULL;
-		return 1;
-	}
-	else
-		return -1;
-	return 0;
 }
 
 int Mouse::ReadFromFile(FILE* BinaryReaderFile)

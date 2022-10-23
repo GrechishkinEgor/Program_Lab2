@@ -82,43 +82,6 @@ void Keyboard::OutputAllInfo()
 	return;
 }
 
-int Keyboard::Save(const char* Path)
-{
-	if (Path != NULL)
-	{
-		FILE* Writer = fopen(Path, "wb");
-		if (Writer != NULL)
-		{
-			this->WriteInFile(Writer);
-			fclose(Writer);
-			Writer = NULL;
-			return 1;
-		}
-		else
-			return 0;
-	}
-	else
-		return 0;
-}
-
-int Keyboard::SaveNew(const char* Path)
-{
-	if (Path != NULL)
-	{
-		FILE* Check = fopen(Path, "rb");
-		if (Check != NULL)
-		{
-			fclose(Check);
-			Check = NULL;
-			return -1;
-		}
-		else
-			return this->Save(Path);
-	}
-	else
-		return 0;
-}
-
 int Keyboard::WriteInFile(FILE* BinaryWriterFile)
 {
 	if (BinaryWriterFile == NULL)
@@ -127,23 +90,6 @@ int Keyboard::WriteInFile(FILE* BinaryWriterFile)
 	fwrite(this->TypeOfConnection, sizeof(this->TypeOfConnection), 1, BinaryWriterFile);
 	fwrite(&this->LengthOfCable, sizeof(this->LengthOfCable), 1, BinaryWriterFile);
 	return 1;
-}
-
-int Keyboard::Load(const char* Path)
-{
-	if (Path == NULL)
-		return 0;
-	FILE* Reader = fopen(Path, "rb");
-	if (Reader != NULL)
-	{
-		this->ReadFromFile(Reader);
-		fclose(Reader);
-		Reader = NULL;
-		return 1;
-	}
-	else
-		return -1;
-	return 0;
 }
 
 int Keyboard::ReadFromFile(FILE* BinaryReaderFile)

@@ -32,18 +32,11 @@ public:
 
 	void OutputAllInfo();
 
-	/*Сохраняет данные в файл (путь - Path)
-	Возврат: 1 - успешно; 0 - файл не открылся*/
-	int Save(const char* Path);
-	/*Записывает данные в новый файл.
-	Возврат: 1 - успешно; 0 - файл не открылся; -1 - файл существует*/
-	int SaveNew(const char* Path);
 	/*Записывает данные в открытый для записи бинарный поток.
 	Возврат: 1 - успешно; 0 - передан нулевой указатель на поток*/
-	int WriteInFile(FILE* BinaryWriterFile);
-	/*Возврат: 1 - успешно; 0 - передан нулевой указатели пути файла; -1 - файл не найден*/
-	int Load(const char* Path);
+	int WriteInFile(FILE* BinaryWriterFile) override;
+	
 	/*Прочитать содержимое бинарного потока, открытого на чтение
 	Возврат: 0 - передан нулевой указатель на поток; 1 - успешно*/
-	int ReadFromFile(FILE* BinaryReaderFile);
+	int ReadFromFile(FILE* BinaryReaderFile) override;
 };

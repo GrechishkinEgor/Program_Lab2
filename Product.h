@@ -61,12 +61,12 @@ public:
 	int SaveNew(const char* Path);
 	/*«аписывает данные в открытый дл€ записи бинарный поток. 
 	¬озврат: 1 - успешно; 0 - передан нулевой указатель на поток*/
-	int WriteInFile(FILE* BinaryWriterFile);
+	virtual int WriteInFile(FILE* BinaryWriterFile);
 	/*¬озврат: 1 - успешно; 0 - передан нулевой указатели пути файла; -1 - файл не найден*/
-	int Load(const char* Path);
+    int Load(const char* Path);
 	/*ѕрочитать содержимое бинарного потока, открытого на чтение
 	¬озврат: 0 - передан нулевой указатель на поток; 1 - успешно*/
-	int ReadFromFile(FILE* BinaryReaderFile);
+	virtual int ReadFromFile(FILE* BinaryReaderFile);
 };
 
 void OutputTableOfProduct(Product* List, int size);

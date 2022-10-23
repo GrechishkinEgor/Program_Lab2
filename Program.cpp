@@ -12,7 +12,7 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
 
-    Product FirstProduct, SecondProduct;
+   /* Product FirstProduct, SecondProduct;
     FirstProduct++;
     SecondProduct++;
     FirstProduct.SetPrice(500000);
@@ -28,7 +28,16 @@ int main()
     }
     //Product::ResetTotalCost();
     Product::CalculateTotalCost(Array, 3);
-    printf("Общая стоимость товаров: %g", Product::GetTotalCost() / 100.0);
+    printf("Общая стоимость товаров: %g", Product::GetTotalCost() / 100.0);*/
+
+    Mouse FirstMouse;
+    FirstMouse.SetName("Mouse");
+    FirstMouse.SetSensitivity(500);
+    Product* MouseLikeProduct = &FirstMouse;
+    MouseLikeProduct->Save("MouseLikeProduct.txt");
+    Mouse SecondMouse;
+    SecondMouse.Load("MouseLikeProduct.txt");
+    SecondMouse.OutputAllInfo();
 
     return 0;
 }
