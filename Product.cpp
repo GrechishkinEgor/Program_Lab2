@@ -283,16 +283,6 @@ int Product::ReadFromFile(FILE* BinaryReaderFile)
 		return 0;
 }
 
-void OutputTableOfProduct(Product* List, int size)
-{
-	for (int i = 0; i < size; i++)
-	{
-		printf("| %*s | %*s | %11.2lf | %11d |\n", PRODUCT_NAME_MAX_SIZE, List[i].Name, PRODUCT_COMPANY_MAX_SIZE, List[i].Company,
-			List[i].Price / 100.0, List[i].Count);
-	}
-	return;
-}
-
 int operator+(int Num, Product obj)
 {
 	return Num + obj.Count;

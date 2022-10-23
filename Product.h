@@ -43,8 +43,6 @@ public:
 	Ложь, если произошла ошибка - совокупная стоимость остается без изменений*/
 	static bool CalculateTotalCost(Product* ArrayOfProduct, int Size);
 
-	friend void OutputTableOfProduct(Product* List, int size);
-
 	int operator++();
 	int operator++(int);
 	int operator--();
