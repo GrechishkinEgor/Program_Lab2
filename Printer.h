@@ -23,7 +23,7 @@ public:
 	bool SetDPI(int DPI);
 	bool SetPaperFormat(int PaperFormat);
 
-	void GetTypeOfPrint(char* Type);
+	char* GetTypeOfPrint(char* Type);
 	std::string GetTypeOfPrint();
 	int GetDPI();
 	int GetPaperFormat();

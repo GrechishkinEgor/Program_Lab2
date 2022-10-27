@@ -31,9 +31,9 @@ public:
 	bool IncreaseCount();
 	bool DecreaseCount();
 
-	void GetName(char* Name);
+	char* GetName(char* Name);
 	std::string GetName();
-	void GetCompany(char* Company);
+	char* GetCompany(char* Company);
 	std::string GetCompany();
 	int GetPrice();
 	int GetCount();

@@ -84,11 +84,11 @@ bool Keyboard::SetLengthOfCable(int Length)
 		return false;
 }
 
-void Keyboard::GetTypeOfConnection(char* Type)
+char* Keyboard::GetTypeOfConnection(char* Type)
 {
 	if (Type != NULL)
 		strcpy(Type, this->TypeOfConnection);
-	return;
+	return Type;
 }
 
 std::string Keyboard::GetTypeOfConnection()

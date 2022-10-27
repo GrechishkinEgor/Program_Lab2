@@ -116,11 +116,11 @@ bool Mouse::SetCountOfButtons(int Count)
 		return false;
 }
 
-void Mouse::GetTypeOfConnection(char* Type)
+char* Mouse::GetTypeOfConnection(char* Type)
 {
 	if (Type != NULL)
 		strcpy(Type, this->TypeOfConnection);
-	return;
+	return Type;
 }
 
 std::string Mouse::GetTypeOfConnection()

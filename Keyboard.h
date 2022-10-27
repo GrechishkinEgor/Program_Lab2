@@ -22,7 +22,7 @@ public:
 	bool SetTypeOfConnection(std::string Type);
 	bool SetLengthOfCable(int Length);
 
-	void GetTypeOfConnection(char* Type);
+	char* GetTypeOfConnection(char* Type);
 	std::string GetTypeOfConnection();
 	int GetLengthOfCable();
 

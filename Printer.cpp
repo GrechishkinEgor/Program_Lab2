@@ -89,11 +89,11 @@ bool Printer::SetPaperFormat(int PaperFormat)
 		return false;
 }
 
-void Printer::GetTypeOfPrint(char* Type)
+char* Printer::GetTypeOfPrint(char* Type)
 {
 	if (Type != NULL)
 		strcpy(Type, this->TypeOfPrint);
-	return;
+	return Type;
 }
 
 std::string Printer::GetTypeOfPrint()

@@ -120,11 +120,11 @@ bool Product::SetCount(int Count)
 		return false;
 }
 
-void Product::GetName(char* Name)
+char* Product::GetName(char* Name)
 {
 	if (Name != NULL)
 		strcpy(Name, this->Name);
-	return;
+	return Name;
 }
 
 std::string Product::GetName()
@@ -132,11 +132,11 @@ std::string Product::GetName()
 	return std::string(this->Name);
 }
 
-void Product::GetCompany(char* Company)
+char* Product::GetCompany(char* Company)
 {
 	if (Company != NULL)
 		strcpy(Company, this->Company);
-	return;
+	return Company;
 }
 
 std::string Product::GetCompany()
@@ -148,6 +148,7 @@ int Product::GetPrice()
 {
 	return this->Price;
 }
+
 
 int Product::GetCount()
 {

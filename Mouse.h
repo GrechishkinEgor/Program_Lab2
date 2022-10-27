@@ -28,7 +28,7 @@ public:
 	bool SetSensitivity(int Sensitivity);
 	bool SetCountOfButtons(int Count);
 
-	void GetTypeOfConnection(char* Type);
+	char* GetTypeOfConnection(char* Type);
 	std::string GetTypeOfConnection();
 	int GetLengthOfCable();
 	int GetSensitivity();
