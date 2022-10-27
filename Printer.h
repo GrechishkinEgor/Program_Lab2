@@ -14,14 +14,17 @@ public:
 	Printer();
 	Printer(Product General);
 	Printer(Product General, const char* Type, int DPI, int PaperFormat);
+	Printer(Product General, std::string Type, int DPI, int PaperFormat);
 	Printer(const Printer& Obj);
 	~Printer();
 
 	bool SetTypeOfPrint(const char* Type);
+	bool SetTypeOfPrint(std::string Type);
 	bool SetDPI(int DPI);
 	bool SetPaperFormat(int PaperFormat);
 
 	void GetTypeOfPrint(char* Type);
+	std::string GetTypeOfPrint();
 	int GetDPI();
 	int GetPaperFormat();
 

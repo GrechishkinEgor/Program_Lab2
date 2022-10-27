@@ -14,13 +14,24 @@ int main()
 
     std::string Name = "TestString";
     std::string Company = "TestString2";
-    Product FirstProduct;
-    FirstProduct.SetName(Name);
-    FirstProduct.SetCompany(Company);
-    FirstProduct.OutputAllInfo();
+    Product FirstProduct(Name, Company, 100000, 10);
+    //FirstProduct.OutputAllInfo();
+    Product* ArrayOfProduct = new Product[5];
+    for (int i = 0; i < 5; i++)
+    {
+        ArrayOfProduct[i].SetCount(i + 1);
+        ArrayOfProduct[i].SetPrice((i + 1) * 1000);
+    }
+
     std::string ReturnName = FirstProduct.GetName();
     std::string ReturnCompany = FirstProduct.GetCompany();
     std::cout << "Название: " << ReturnName << "; Компания: " << ReturnCompany << std::endl;
 
+    Product::CalculateTotalCost(ArrayOfProduct, 5);
+    printf("Совокупная стоимость 1: %g\n", Product::GetTotalCost() / 100.0);
+    FirstProduct.AddInTotalCost();
+    printf("Совокупная стоимость 2: %g\n", Product::GetTotalCost() / 100.0);
+    Product::ResetTotalCost();
+    printf("Совокупная стоимость 3: %g\n", Product::GetTotalCost() / 100.0);
     return 0;
 }

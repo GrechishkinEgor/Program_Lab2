@@ -26,7 +26,21 @@ Mouse::Mouse(Product General, int Sensitivity, int CountButtons, const char* Typ
 	return;
 }
 
+Mouse::Mouse(Product General, int Sensitivity, int CountButtons, std::string TypeOfConnection) : Mouse(General)
+{
+	this->SetSensitivity(Sensitivity);
+	this->SetCountOfButtons(CountButtons);
+	this->SetTypeOfConnection(TypeOfConnection);
+	return;
+}
+
 Mouse::Mouse(Product General, int Sensitivity, int CountButtons, const char* TypeOfConnection, int LengthOfCable) : Mouse(General, Sensitivity, CountButtons, TypeOfConnection)
+{
+	this->SetLengthOfCable(LengthOfCable);
+	return;
+}
+
+Mouse::Mouse(Product General, int Sensitivity, int CountButtons, std::string TypeOfConnection, int LengthOfCable) : Mouse(General, Sensitivity, CountOfButtons, TypeOfConnection)
 {
 	this->SetLengthOfCable(LengthOfCable);
 	return;
@@ -51,6 +65,18 @@ bool Mouse::SetTypeOfConnection(const char* Type)
 	if (Type != NULL && strlen(Type) < MOUSE_TYPE_OF_CONNECTION_SIZE)
 	{
 		strcpy(this->TypeOfConnection, Type);
+		return true;
+	}
+	else
+		return false;
+}
+
+bool Mouse::SetTypeOfConnection(std::string Type)
+{
+	if (Type.length() < PRODUCT_NAME_MAX_SIZE)
+	{
+		Type.copy(this->TypeOfConnection, Type.length());
+		this->TypeOfConnection[Type.length()] = '\0';
 		return true;
 	}
 	else
@@ -95,6 +121,11 @@ void Mouse::GetTypeOfConnection(char* Type)
 	if (Type != NULL)
 		strcpy(Type, this->TypeOfConnection);
 	return;
+}
+
+std::string Mouse::GetTypeOfConnection()
+{
+	return std::string(this->TypeOfConnection);
 }
 
 int Mouse::GetLengthOfCable()

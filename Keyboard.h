@@ -12,14 +12,18 @@ public:
 	Keyboard();
 	Keyboard(Product General);
 	Keyboard(Product General, const char* TypeOfConnection);
+	Keyboard(Product General, std::string TypeOfConnection);
 	Keyboard(Product General, const char* TypeOfConnection, int LengthOfCable);
+	Keyboard(Product General, std::string TypeOfConnection, int LengthOfCable);
 	Keyboard(const Keyboard& Obj);
 	~Keyboard();
 
 	bool SetTypeOfConnection(const char* Type);
+	bool SetTypeOfConnection(std::string Type);
 	bool SetLengthOfCable(int Length);
 
 	void GetTypeOfConnection(char* Type);
+	std::string GetTypeOfConnection();
 	int GetLengthOfCable();
 
 	void OutputAllInfo();

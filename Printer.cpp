@@ -24,6 +24,14 @@ Printer::Printer(Product General, const char* Type, int DPI, int PaperFormat) : 
 	return;
 }
 
+Printer::Printer(Product General, std::string Type, int DPI, int PaperFormat) : Product(General)
+{
+	this->SetTypeOfPrint(Type);
+	this->SetDPI(DPI);
+	this->SetPaperFormat(PaperFormat);
+	return;
+}
+
 Printer::Printer(const Printer& Obj) : Product(Obj)
 {
 	this->SetTypeOfPrint(Obj.TypeOfPrint);
@@ -46,6 +54,17 @@ bool Printer::SetTypeOfPrint(const char* Type)
 	}
 	else
 		return false;
+}
+
+bool Printer::SetTypeOfPrint(std::string Type)
+{
+	if (Type.length() < PRINTER_TYPE_OF_PRINT_SIZE)
+	{
+		Type.copy(this->TypeOfPrint, Type.length());
+		this->TypeOfPrint[Type.length()] = '\0';
+		return true;
+	}
+	return false;
 }
 
 bool Printer::SetDPI(int DPI)
@@ -75,6 +94,11 @@ void Printer::GetTypeOfPrint(char* Type)
 	if (Type != NULL)
 		strcpy(Type, this->TypeOfPrint);
 	return;
+}
+
+std::string Printer::GetTypeOfPrint()
+{
+	return std::string(this->TypeOfPrint);
 }
 
 int Printer::GetDPI()

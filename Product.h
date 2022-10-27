@@ -12,7 +12,7 @@ protected:
 	int Price;
 	int Count;
 
-	static int TotalCost;	//—овокупна€ стоимость всех товаров
+	static long long int TotalCost;	//—овокупна€ стоимость всех товаров
 public:
 	Product();
 	Product(const char* Name, const char* Company, int Price);
@@ -42,7 +42,7 @@ public:
 	/*ƒобавл€ет стоимость товара к совокупной стоимости всех товаров
 	¬озврат: истина, если успешно; ложь, если произошла ошибка (совокупна€ стоимость не изменитс€)*/
 	bool AddInTotalCost();
-	static int GetTotalCost();
+	static long long int GetTotalCost();
 	static void ResetTotalCost();	//”станавливает совокупную стоимость в 0
 	/*—читает совокупную стоимость товаров из массива и добавл€ет еЄ к совокупной стоимости всех товаров. 
 	¬озврат: истина, если успешно. ¬ этом случае посчитанна€ стоимость добавл€етс€ к совокупной стоимости; 

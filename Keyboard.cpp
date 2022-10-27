@@ -20,9 +20,20 @@ Keyboard::Keyboard(Product General, const char* TypeOfConnection) : Keyboard(Gen
 	return;
 }
 
-Keyboard::Keyboard(Product General, const char* TypeOfConnection, int LengthOfCable) : Keyboard(General)
+Keyboard::Keyboard(Product General, std::string TypeOfConnection) : Keyboard(General)
 {
 	SetTypeOfConnection(TypeOfConnection);
+	return;
+}
+
+Keyboard::Keyboard(Product General, const char* TypeOfConnection, int LengthOfCable) : Keyboard(General, TypeOfConnection)
+{
+	SetLengthOfCable(LengthOfCable);
+	return;
+}
+
+Keyboard::Keyboard(Product General, std::string TypeOfConnection, int LengthOfCable) : Keyboard(General, TypeOfConnection)
+{
 	SetLengthOfCable(LengthOfCable);
 	return;
 }
@@ -50,6 +61,18 @@ bool Keyboard::SetTypeOfConnection(const char* Type)
 		return false;
 }
 
+bool Keyboard::SetTypeOfConnection(std::string Type)
+{
+	if (Type.length() < PRODUCT_NAME_MAX_SIZE)
+	{
+		Type.copy(this->TypeOfConnection, Type.length());
+		this->Name[Type.length()] = '\0';
+		return true;
+	}
+	else
+		return false;
+}
+
 bool Keyboard::SetLengthOfCable(int Length)
 {
 	if (Length >= 0)
@@ -66,6 +89,11 @@ void Keyboard::GetTypeOfConnection(char* Type)
 	if (Type != NULL)
 		strcpy(Type, this->TypeOfConnection);
 	return;
+}
+
+std::string Keyboard::GetTypeOfConnection()
+{
+	return std::string(this->TypeOfConnection);
 }
 
 int Keyboard::GetLengthOfCable()

@@ -16,16 +16,20 @@ public:
 	Mouse();
 	Mouse(Product General);
 	Mouse(Product General, int Sensitivity, int CountButtons, const char* TypeOfConnection);
+	Mouse(Product General, int Sensitivity, int CountButtons, std::string TypeOfConnection);
 	Mouse(Product General, int Sensitivity, int CountButtons, const char* TypeOfConnection, int LengthOfCable);
+	Mouse(Product General, int Sensitivity, int CountButtons, std::string TypeOfConnection, int LengthOfCable);
 	Mouse(const Mouse& Obj);
 	~Mouse();
 
 	bool SetTypeOfConnection(const char* Type);
+	bool SetTypeOfConnection(std::string Type);
 	bool SetLengthOfCable(int Length);
 	bool SetSensitivity(int Sensitivity);
 	bool SetCountOfButtons(int Count);
 
 	void GetTypeOfConnection(char* Type);
+	std::string GetTypeOfConnection();
 	int GetLengthOfCable();
 	int GetSensitivity();
 	int GetCountOfButtons();

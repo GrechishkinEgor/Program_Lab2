@@ -1,5 +1,5 @@
 #include "Product.h"
-int Product::TotalCost = 0;
+long long int Product::TotalCost = 0;
 
 Product::Product()
 {
@@ -213,14 +213,14 @@ bool Product::AddInTotalCost()
 {
 	if (Product::TotalCost + this->Count * this->Price >= 0)
 	{
-		Product::TotalCost += this->Count * this->Price;
+		Product::TotalCost += (long long)this->Count * this->Price;
 		return true;
 	}
 	else
 		return false;
 }
 
-int Product::GetTotalCost()
+long long int Product::GetTotalCost()
 {
 	return Product::TotalCost;
 }
@@ -235,9 +235,9 @@ bool Product::CalculateTotalCost(Product* ArrayOfProduct, int Size)
 {
 	if (ArrayOfProduct == NULL)
 		return false;
-	int Cost = 0;
+	long long int Cost = 0;
 	for (int i = 0; i < Size && Cost >= 0; i++)
-		Cost += ArrayOfProduct[i].Count * ArrayOfProduct[i].Price;
+		Cost += (long long)ArrayOfProduct[i].Count * ArrayOfProduct[i].Price;
 	if (Cost >= 0 && Product::TotalCost + Cost >= 0)
 	{
 		Product::TotalCost += Cost;
