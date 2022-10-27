@@ -152,3 +152,5 @@ void Monitor::GetAspectRation(int* AspectRatio1, int* AspectRatio2)
 		*AspectRatio2 = this->AspectRatio[1];
 	return;
 }
+
+

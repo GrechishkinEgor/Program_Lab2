@@ -155,6 +155,12 @@ int Product::GetCount()
 	return this->Count;
 }
 
+Product& Product::GetGeneral()
+{
+	Product& General = *this;
+	return General;
+}
+
 int Product::operator++()
 {
 	this->IncreaseCount();

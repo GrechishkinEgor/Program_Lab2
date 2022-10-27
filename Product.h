@@ -37,6 +37,7 @@ public:
 	std::string GetCompany();
 	int GetPrice();
 	int GetCount();
+	Product& GetGeneral();
 	void OutputAllInfo();
 
 	/*Добавляет стоимость товара к совокупной стоимости всех товаров

@@ -34,5 +34,9 @@ int main()
     Product::ResetTotalCost();
     printf("Совокупная стоимость 3: %g\n", Product::GetTotalCost() / 100.0);
     delete[] ArrayOfProduct;
+    Monitor FirstMonitor(FirstProduct);
+    Product& RefGeneralInFirstMonitor = FirstMonitor.GetGeneral();
+    Product SecondProduct(RefGeneralInFirstMonitor);
+    SecondProduct.OutputAllInfo();
     return 0;
 }
