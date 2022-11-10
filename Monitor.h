@@ -26,8 +26,10 @@ public:
 	int GetFrequency();
 	void GetSize(int* Width, int* Height);
 	void GetAspectRation(int* AspectRatio1, int* AspectRatio2);
-
 	void OutputAllInfo();
+
+	void operator=(Product& General);
+	friend void operator<<(std::ostream& o, Monitor obj);
 
 	/*Записывает данные в открытый для записи бинарный поток.
 	Возврат: 1 - успешно; 0 - передан нулевой указатель на поток*/
@@ -35,4 +37,6 @@ public:
 	/*Прочитать содержимое бинарного потока, открытого на чтение
 	Возврат: 0 - передан нулевой указатель на поток; 1 - успешно*/
 	int ReadFromFile(FILE* BinaryReaderFile);
+
+	
 };

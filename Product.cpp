@@ -401,3 +401,11 @@ int operator+(int Num, Product obj)
 {
 	return Num + obj.Count;
 }
+
+void operator<<(std::ostream& o, Product obj)
+{
+	std::cout << "Название товара: " << obj.Name << std::endl;
+	std::cout << "Компания-производитель: " << obj.Company << std::endl;
+	std::cout << "Цена товара (в рублях): " << (obj.Price / 100.0) << std::endl;
+	std::cout << "Количество товара(штук): " << obj.Count << std::endl;
+}

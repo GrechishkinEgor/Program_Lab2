@@ -59,6 +59,7 @@ public:
 	int operator+(Product obj);
 	int operator+(int Num);
 	friend int operator+ (int Num, Product obj);
+	friend void operator<<(std::ostream& o, Product obj);
 
 	/*Сохраняет данные в файл (путь - Path)
 	Возврат: 1 - успешно; 0 - файл не открылся*/

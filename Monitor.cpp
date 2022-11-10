@@ -34,6 +34,15 @@ int Monitor::ReadFromFile(FILE* BinaryReaderFile)
 	return 1;
 }
 
+void Monitor::operator=(Product& General)
+{
+	this->SetName(General.GetName());
+	this->SetCompany(General.GetCompany());
+	this->SetCount(General.GetCount());
+	this->SetPrice(General.GetPrice());
+	return;
+}
+
 Monitor::Monitor() : Product()
 {
 	this->Diagonal = 0;
@@ -153,4 +162,12 @@ void Monitor::GetAspectRation(int* AspectRatio1, int* AspectRatio2)
 	return;
 }
 
-
+void operator<<(std::ostream& o, Monitor obj)
+{
+	std::cout << obj.GetGeneral();
+	std::cout << "Диагональ матрицы(в дюймах): " << obj.Diagonal << std::endl;
+	std::cout << "Частота обновления экрана (в герцах): " << obj.Frequency << std::endl;
+	std::cout << "Разрешение экрана: " << obj.Size[0] << " x " << obj.Size[1] << std::endl;
+	std::cout << "Соотношение сторон: " << obj.AspectRatio[0] << ":" << obj.AspectRatio[1] << std::endl;
+	return;
+}
