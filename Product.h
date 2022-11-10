@@ -20,6 +20,8 @@ public:
 	Product(const char* Name, const char* Company, int Price, int Count);
 	Product(std::string Name, std::string Company, int Price, int Count);
 	Product(const Product& Obj);
+	Product(const char* Path);
+	Product(std::string Path);
 	~Product();
 
 	bool SetName(const char* Name);

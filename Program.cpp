@@ -15,28 +15,27 @@ int main()
     std::string Name = "TestString";
     std::string Company = "TestString2";
     Product FirstProduct(Name, Company, 100000, 10);
-    //FirstProduct.OutputAllInfo();
-    Product* ArrayOfProduct = new Product[5];
-    for (int i = 0; i < 5; i++)
+    FirstProduct.OutputAllInfo();
+    printf("----\n");
+    FirstProduct.Save("Product1");
+    try
     {
-        ArrayOfProduct[i].SetCount(i + 1);
-        ArrayOfProduct[i].SetPrice((i + 1) * 1000);
+        Product SecondProduct("Product1");
+        SecondProduct.OutputAllInfo();
+    }
+    catch (const char* e)
+    {
+        printf("Произошла ошибка: %s\n", e);
     }
 
-    std::string ReturnName = FirstProduct.GetName();
-    std::string ReturnCompany = FirstProduct.GetCompany();
-    std::cout << "Название: " << ReturnName << "; Компания: " << ReturnCompany << std::endl;
-
-    Product::CalculateTotalCost(ArrayOfProduct, 5);
-    printf("Совокупная стоимость 1: %g\n", Product::GetTotalCost() / 100.0);
-    FirstProduct.AddInTotalCost();
-    printf("Совокупная стоимость 2: %g\n", Product::GetTotalCost() / 100.0);
-    Product::ResetTotalCost();
-    printf("Совокупная стоимость 3: %g\n", Product::GetTotalCost() / 100.0);
-    delete[] ArrayOfProduct;
-    Monitor FirstMonitor(FirstProduct);
-    Product& RefGeneralInFirstMonitor = FirstMonitor.GetGeneral();
-    Product SecondProduct(RefGeneralInFirstMonitor);
-    SecondProduct.OutputAllInfo();
+    try
+    {
+        Product ThirdProduct("Product2");
+        ThirdProduct.OutputAllInfo();
+    }
+    catch (const char* e)
+    {
+        printf("Произошла ошибка: %s\n", e);
+    }
     return 0;
 }

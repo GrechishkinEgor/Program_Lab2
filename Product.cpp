@@ -47,6 +47,20 @@ Product::Product(const Product& Obj) : Product()
 	return;
 }
 
+Product::Product(const char* Path)
+{
+	if (this->Load(Path) == -1)
+		throw "Cannot open the file";
+	return;
+}
+
+Product::Product(std::string Path)
+{
+	if (this->Load(Path) == -1)
+		throw "Cannot open the file";
+	return;
+}
+
 Product::~Product()
 {
 	return;
