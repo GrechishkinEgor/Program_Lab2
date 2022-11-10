@@ -22,7 +22,7 @@ public:
 	Product(const Product& Obj);
 	Product(const char* Path);
 	Product(std::string Path);
-	~Product();
+	virtual ~Product();
 
 	bool SetName(const char* Name);
 	bool SetName(std::string Name);
