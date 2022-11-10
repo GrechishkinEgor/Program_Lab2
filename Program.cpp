@@ -8,6 +8,7 @@
 #include "Monitor.h"
 #include <vector>
 #include <algorithm>
+#include "Selling.h"
 
 bool SortByNameAfterCompany(Product* obj1, Product* obj2)
 {
@@ -72,6 +73,11 @@ int main()
     printf("-----\n");
     std::cout << *((Monitor*)SecondPointerOnProduct);
     printf("-----\n");
+
+    Selling<Monitor> SoldMonitor(FirstMonitor);
+    SoldMonitor.OutputAllInfo();
+    printf("-----\n");
+    return 0;
 
     /*lab7*/
     std::vector<Product*> ProductLine;

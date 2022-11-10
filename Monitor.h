@@ -5,7 +5,6 @@
 
 class Monitor : public Product {
 private:
-	Product General;
 	int Diagonal;		//Диагональ матрицы в дюймах
 	int Frequency;		//Частота обновления экрана монитора в герцах
 	int Size[2];		//Разрешение экрана (число пикселей по горизонтали и вертикали)

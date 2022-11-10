@@ -145,6 +145,7 @@
     <ClCompile Include="Printer.cpp" />
     <ClCompile Include="Product.cpp" />
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Selling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keyboard.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Printer.h" />
     <ClInclude Include="Product.h" />
+    <ClInclude Include="Selling.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
